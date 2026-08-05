@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>La Finquita 1920 — Campo, música y buena mesa</title>
+<meta name="description" content="Un pedacito de campo con alma de otra época. Eventos, música en vivo y encuentros al aire libre en La Finquita 1920." />
+
+<!-- ============================================================= -->
+<!--  🎟  PEGÁ ACÁ EL LINK DE VENTI (una sola vez → se aplica a TODOS los botones)  -->
+<!-- ============================================================= -->
+<meta name="venti-url" content="https://www.venti.com.ar/" />
+
+<link rel="icon" type="image/jpeg" href="assets/logo.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --black:#0a0a0a;
+    --panel:#141414;
+    --panel-2:#1b1b1b;
+    --white:#f4f2ee;
+    --muted:#9b968d;
+    --line:rgba(244,242,238,.12);
+    --line-strong:rgba(244,242,238,.24);
+    --bordo:#7c1f1f;               /* Ediciones Especiales */
+    --bordo-line:rgba(150,40,40,.55);
+    --shadow:0 30px 70px rgba(0,0,0,.6);
+    --serif:"Playfair Display", Georgia, serif;
+    --sans:"Jost", system-ui, sans-serif;
+    /* asterisco de la marca (hecho a mano, asset real) */
+    --ast:url("assets/asterisco.png");
+  }
+
+  /* Asterisco reutilizable (PNG blanco) — tamaño por font-size/width.
+     Usamos background-image (no CSS mask) para que funcione también con file:// */
+  .ast{display:inline-block;width:1em;height:1em;vertical-align:middle;
+    background:var(--ast) center/contain no-repeat;}
+  .ast-dark{filter:invert(1);} /* asterisco negro sobre fondos claros */
+  .ast-deco{position:absolute;opacity:.06;pointer-events:none;z-index:-1;}
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--sans);
+    background:var(--black);
+    color:var(--white);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* grano vintage sutil sobre todo */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.1;letter-spacing:.01em;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{width:min(1150px,90vw);margin-inline:auto;}
+  .eyebrow{font-size:.72rem;letter-spacing:.4em;text-transform:uppercase;font-weight:500;color:var(--muted);}
+  section{position:relative;z-index:2;padding:clamp(4.5rem,10vw,8rem) 0;}
+
+  /* rulos decorativos */
+  .rule{display:flex;align-items:center;gap:1rem;color:var(--line-strong);}
+  .rule::before,.rule::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--line-strong),transparent);}
+  .rule span{font-size:1rem;letter-spacing:.3em;}
+
+  /* ---------- Botones ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:.6em;
+    font-family:var(--sans);font-weight:500;font-size:.78rem;
+    letter-spacing:.22em;text-transform:uppercase;
+    padding:1em 2em;border-radius:2px;cursor:pointer;border:1px solid transparent;
+    transition:transform .25s ease, background .25s ease, color .25s ease, border-color .25s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{background:var(--white);color:var(--black);}
+  .btn-primary:hover{transform:translateY(-3px);background:#fff;}
+  .btn-ghost{border-color:var(--line-strong);color:var(--white);}
+  .btn-ghost:hover{border-color:var(--white);transform:translateY(-3px);background:rgba(244,242,238,.06);}
+
+  /* ---------- Nav ---------- */
+  header{position:fixed;inset:0 0 auto 0;z-index:60;padding:1.2rem 0;transition:background .3s ease,padding .3s ease,border-color .3s ease;border-bottom:1px solid transparent;}
+  header.scrolled{background:rgba(10,10,10,.85);backdrop-filter:blur(12px);padding:.6rem 0;border-color:var(--line);}
+  .nav{display:flex;align-items:center;justify-content:center;}
+  .brand img{height:44px;width:auto;transition:height .3s ease;}
+  header.scrolled .brand img{height:40px;}
+  .nav-links{display:flex;align-items:center;gap:2.2rem;}
+  .nav-links a.link{font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);transition:color .2s ease;}
+  .nav-links a.link:hover{color:var(--white);}
+  .menu-toggle{display:none;background:none;border:none;color:var(--white);cursor:pointer;}
+
+  /* ---------- Hero ---------- */
+  .hero{min-height:100svh;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;padding:7rem 0 4rem;}
+  .hero-bg{position:absolute;inset:0;z-index:-2;
+    background:linear-gradient(180deg, rgba(10,10,10,.5) 0%, rgba(10,10,10,.48) 42%, rgba(10,10,10,.82) 100%);
+  }
+  .hero-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 42%, transparent 34%, rgba(0,0,0,.72) 100%);}
+  /* slideshow de fotos del evento (se pasan con crossfade) */
+  .hero-slides{position:absolute;inset:0;z-index:-3;overflow:hidden;background:var(--black);}
+  .hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;filter:grayscale(1) contrast(1.06) brightness(.85);opacity:0;transition:opacity 1.8s ease;}
+  .hero-slide.is-active{opacity:1;animation:heroZoom 7s ease-out forwards;}
+  @keyframes heroZoom{from{transform:scale(1.06)}to{transform:scale(1.15)}}
+  .hero-logo{width:min(440px,74vw);height:auto;margin-inline:auto;filter:drop-shadow(0 12px 40px rgba(0,0,0,.55));}
+  .hero .lead{font-family:var(--serif);font-style:italic;font-size:clamp(1.2rem,2.6vw,1.7rem);color:var(--white);max-width:32ch;margin:1.6rem auto .4rem;}
+  .hero .sub{color:var(--muted);letter-spacing:.28em;text-transform:uppercase;font-size:.72rem;margin-bottom:2.4rem;}
+  .hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .scroll-hint{position:absolute;bottom:1.8rem;left:50%;transform:translateX(-50%);font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:.5rem;}
+  .scroll-hint i{width:1px;height:32px;background:var(--line-strong);animation:pulse 2s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:.2;transform:scaleY(.5)}50%{opacity:1;transform:scaleY(1)}}
+
+  .section-head{max-width:640px;margin:0 auto 3.4rem;text-align:center;}
+  .section-head::before{content:"";display:block;width:26px;height:26px;margin:0 auto 1.2rem;background:var(--ast) center/contain no-repeat;}
+  .section-head.no-ast::before{display:none;}
+  .ev-title-logo{display:block;width:min(300px,64vw);height:auto;margin:0 auto 1.4rem;}
+  .section-head h2{font-size:clamp(2.1rem,5vw,3.3rem);margin:.6rem 0;}
+  .section-head p{color:var(--muted);font-size:1.05rem;}
+
+  /* ---------- Historia ---------- */
+  .historia{background:var(--panel);border-block:1px solid var(--line);}
+  .historia-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,4.5rem);align-items:center;}
+  .historia-copy h2{font-size:clamp(2rem,4.6vw,3rem);margin:.5rem 0 1rem;}
+  .historia-copy p{color:var(--muted);margin-top:1rem;font-size:1.05rem;}
+  .historia-copy .quote{font-family:var(--serif);font-style:italic;font-size:clamp(1.35rem,2.8vw,1.8rem);color:var(--white);line-height:1.4;margin-top:1.6rem;padding-left:1.2rem;border-left:2px solid var(--line-strong);}
+  .stat-row{display:flex;gap:2.6rem;margin-top:2.4rem;flex-wrap:wrap;}
+  .stat b{font-family:var(--serif);font-size:2.6rem;display:block;line-height:1;}
+  .stat span{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+  /* foto tipo vintage: apenas inclinada, marco claro (más grueso abajo) y sombra */
+  .photo-frame{position:relative;aspect-ratio:4/5;background:#ece4d1;
+    border:11px solid #ece4d1;border-bottom-width:38px;
+    box-shadow:0 26px 55px rgba(0,0,0,.6);
+    transform:rotate(-2.4deg);transition:transform .45s ease;}
+  .photo-frame:hover{transform:rotate(0deg);}
+  .photo-frame .ph{position:absolute;inset:0;}
+  .photo-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+
+  /* placeholders grises (reemplazar por <img> reales) */
+  .ph{background-size:cover;background-position:center;filter:grayscale(1) contrast(1.05);}
+  .ph-a{background:linear-gradient(160deg,#3a3a3a,#0d0d0d);}
+  .ph-b{background:linear-gradient(160deg,#2b2b2b,#111);}
+  .ph-c{background:radial-gradient(80% 70% at 30% 20%,#4a4a4a,#0e0e0e);}
+  .ph-d{background:linear-gradient(200deg,#333,#0a0a0a);}
+  .ph-e{background:radial-gradient(90% 80% at 70% 30%,#3f3f3f,#0c0c0c);}
+  .ph-f{background:linear-gradient(140deg,#262626,#000);}
+
+  /* ---------- Experiencia ---------- */
+  .exp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;}
+  .exp-card{background:var(--panel);border:1px solid var(--line);padding:2.4rem 1.9rem;transition:transform .3s ease,border-color .3s ease,background .3s ease;}
+  .exp-card:hover{transform:translateY(-6px);border-color:var(--line-strong);background:var(--panel-2);}
+  .exp-card .ic{width:34px;height:34px;color:var(--white);margin-bottom:1rem;}
+  .exp-card h3{font-size:1.5rem;margin-bottom:.5rem;}
+  .exp-card p{color:var(--muted);font-size:.95rem;}
+
+  /* ---------- Galería ---------- */
+  .gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:180px;gap:.9rem;}
+  .gal-grid .tile{overflow:hidden;position:relative;border:1px solid var(--line);}
+  .gal-grid .tile.big{grid-column:span 2;grid-row:span 2;}
+  .gal-grid .tile.tall{grid-row:span 2;}
+  .gal-grid .tile .ph{position:absolute;inset:0;transition:transform .6s ease,filter .4s ease;}
+  .gal-grid .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
+  .gal-grid .tile:hover .ph,.gal-grid .tile:hover img{transform:scale(1.07);}
+
+  /* ---------- Eventos (cards) ---------- */
+  .eventos{position:relative;background:var(--panel);border-block:1px solid var(--line);overflow:hidden;}
+  .ev-list{position:relative;z-index:2;display:grid;gap:2.6rem;}
+  .ev-empty{text-align:center;color:var(--muted);font-family:var(--serif);font-style:italic;font-size:1.3rem;padding:2rem 0;}
+  .ev-month{display:grid;gap:1rem;}
+  .ev-month-head{display:flex;align-items:center;justify-content:center;gap:1.1rem;margin-bottom:.4rem;}
+  .ev-month-head::before,.ev-month-head::after{content:"";height:1px;width:min(90px,12vw);background:linear-gradient(90deg,transparent,var(--line-strong));}
+  .ev-month-head::after{background:linear-gradient(90deg,var(--line-strong),transparent);}
+  .ev-month-head h3{display:flex;align-items:center;gap:.7rem;font-size:clamp(1.15rem,2.6vw,1.6rem);text-transform:uppercase;letter-spacing:.14em;text-align:center;white-space:nowrap;}
+  .ev-month-head h3 .ast{font-size:.8em;color:var(--white);}
+  .ev-month-head h3 span{color:var(--muted);font-weight:400;letter-spacing:.08em;}
+
+  /* progreso de temporada */
+  .season{position:relative;z-index:2;max-width:640px;margin:0 auto 3.6rem;text-align:center;}
+  .season-head{font-family:var(--serif);font-size:clamp(1.3rem,3vw,1.9rem);line-height:1.3;display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap;}
+  .season-head b{color:var(--white);font-size:1.25em;}
+  .season-head .ast{width:.9em;height:.9em;}
+  .season-sub{color:var(--muted);font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;margin-top:.5rem;}
+  .season-bar{position:relative;height:8px;margin-top:1.3rem;border:1px solid var(--line-strong);border-radius:999px;overflow:hidden;background:rgba(244,242,238,.05);}
+  .season-fill{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,var(--muted),var(--white));transition:width 1.4s ease;}
+  .season-labels{display:flex;justify-content:space-between;margin-top:.7rem;color:var(--muted);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;}
+
+  /* filas de eventos (estilo lista tipo Isidris) */
+  .ev-rows{display:grid;gap:.75rem;}
+  .ev-row{position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1.3rem;padding:.85rem 1.1rem;border:1px solid var(--line);background:var(--black);color:inherit;text-decoration:none;transition:border-color .3s ease,background .3s ease;}
+  .ev-row:hover{border-color:var(--line-strong);background:#111;}
+  .ev-row.next{border-color:var(--line-strong);background:rgba(244,242,238,.04);}
+  .ev-thumb{position:relative;width:58px;height:74px;flex:none;border:1px solid var(--line);overflow:hidden;background:#111;}
+  .ev-thumb img{width:100%;height:100%;object-fit:cover;}
+  .ev-thumb .ph{position:absolute;inset:0;}
+  .ev-thumb .td{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;}
+  .ev-thumb .td .d{font-family:var(--serif);font-size:1.55rem;font-weight:700;}
+  .ev-thumb .td .m{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:.15rem;}
+  .ev-logo{position:absolute;inset:0;display:grid;place-items:center;background:#0c0c0c;padding:7px;}
+  .ev-logo img{width:100%;height:100%;object-fit:contain;}
+  /* Edición Especial → bordó */
+  .ev-row.especial{border-color:var(--bordo-line);background:rgba(124,31,31,.1);}
+  .ev-row.especial:hover{border-color:var(--bordo);background:rgba(124,31,31,.18);}
+  .ev-row.especial .ev-logo{background:var(--bordo);}
+  .ev-row.especial .ev-pill{border-color:var(--bordo-line);}
+  .ev-row.especial:hover .ev-pill{background:var(--bordo);color:#fff;border-color:var(--bordo);}
+  .ev-tags{display:flex;flex-wrap:wrap;gap:.4rem;}
+  .ev-tag{display:inline-flex;align-items:center;gap:.4rem;background:var(--bordo);color:#fff;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.18rem .5rem;border-radius:3px;}
+  .ev-tag .ast{width:.85em;height:.85em;}
+  /* cartel llamativo (ej. Apertura de Temporada) */
+  .ev-cartel{display:inline-flex;align-items:center;gap:.4rem;background:var(--white);color:var(--black);font-size:.64rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.24rem .65rem;border-radius:3px;box-shadow:0 4px 14px rgba(244,242,238,.18);}
+  .ev-cartel .ast{width:.85em;height:.85em;}
+  .ev-info{min-width:0;display:grid;gap:.4rem;}
+  .ev-info h3{font-family:var(--sans);font-weight:600;font-size:1.08rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ev-row:hover .ev-info h3{color:#fff;}
+  .ev-meta{display:flex;flex-wrap:wrap;gap:.25rem 1.1rem;color:var(--muted);font-size:.78rem;}
+  .ev-meta span{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;}
+  .ev-meta svg{width:13px;height:13px;flex:none;}
+  .ev-pill{flex:none;display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--line-strong);border-radius:999px;padding:.65em 1.35em;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;white-space:nowrap;transition:background .3s ease,color .3s ease,border-color .3s ease;}
+  .ev-row:hover .ev-pill{background:var(--white);color:var(--black);border-color:var(--white);}
+  .ev-pill.soon{opacity:.55;}
+  .ev-pill .arrow{display:none;width:16px;height:16px;}
+  .ev-badge{position:absolute;top:-9px;left:16px;display:inline-flex;align-items:center;gap:.4rem;background:var(--white);color:var(--black);font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.28rem .7rem;border-radius:999px;}
+  .ev-badge svg{width:11px;height:11px;}
+  .ev-more{display:flex;justify-content:center;margin-top:2.4rem;position:relative;z-index:2;}
+  .ev-more button{cursor:pointer;background:none;}
+
+  /* ---------- Ubicación ---------- */
+  .ubi-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center;}
+  .ubi-info h2{font-size:clamp(2rem,4.6vw,3rem);margin:.5rem 0 1.4rem;}
+  .ubi-info .row{display:flex;gap:1.1rem;padding:1.1rem 0;border-bottom:1px solid var(--line);align-items:flex-start;}
+  .ubi-info .row svg{width:22px;height:22px;flex:none;margin-top:2px;color:var(--white);}
+  .ubi-info .row b{display:block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.15rem;}
+  .map-frame{aspect-ratio:1/1;overflow:hidden;position:relative;border:1px solid var(--line-strong);box-shadow:var(--shadow);}
+  .map-frame .ph{position:absolute;inset:0;}
+  .map-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+
+  /* ---------- Footer ---------- */
+  footer{position:relative;z-index:2;background:var(--black);border-top:1px solid var(--line);padding:4rem 0 2rem;}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2.6rem;padding-bottom:3rem;border-bottom:1px solid var(--line);}
+  .foot-brand img{height:76px;width:auto;margin-bottom:1rem;}
+  .foot-brand p{color:var(--muted);max-width:34ch;font-size:.95rem;}
+  .foot-col h4{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--white);margin-bottom:1rem;}
+  .foot-col a,.foot-col p{display:block;color:var(--muted);font-size:.95rem;padding:.25rem 0;transition:color .2s ease;}
+  .foot-col a:hover{color:var(--white);}
+  .socials{display:flex;gap:.8rem;margin-top:1rem;}
+  .socials a{width:40px;height:40px;border:1px solid var(--line-strong);display:grid;place-items:center;transition:all .25s ease;}
+  .socials a:hover{background:var(--white);color:var(--black);transform:translateY(-3px);}
+  .socials svg{width:18px;height:18px;}
+  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding-top:1.6rem;font-size:.78rem;color:var(--muted);}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ---------- Mobile ---------- */
+  @media(max-width:860px){
+    .nav{justify-content:flex-end;}
+    .nav-links{display:none;}
+    .menu-toggle{display:block;}
+    .nav-links.open{display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:1.4rem;padding:1.8rem 5vw 2.2rem;background:rgba(10,10,10,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
+    .nav-links.open a.link{color:var(--white);}
+    .nav-links.open .btn{align-self:flex-start;}
+    .historia-grid,.ubi-grid{grid-template-columns:1fr;}
+    .cta-panel{grid-template-columns:1fr;text-align:center;}
+    .cta-panel p,.cta-panel .venti-note{margin-inline:auto;justify-content:center;}
+    .gal-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px;}
+    .gal-grid .tile.big{grid-column:span 2;grid-row:span 1;}
+    .foot-grid{grid-template-columns:1fr;}
+  }
+  @media(max-width:600px){
+    .ev-row{gap:.9rem;padding:.7rem .8rem;}
+    .ev-thumb{width:50px;height:64px;}
+    .ev-info h3{white-space:normal;font-size:1rem;}
+    .ev-meta{font-size:.72rem;gap:.2rem .7rem;}
+    .ev-pill{padding:.6em;border-radius:50%;}
+    .ev-pill .txt{display:none;}
+    .ev-pill .arrow{display:block;}
+    .ev-pill.soon{border-radius:999px;padding:.6em 1em;}
+    .ev-pill.soon .txt{display:inline;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<header id="header">
+  <div class="wrap nav">
+    <nav class="nav-links" id="navLinks">
+      <a class="link" href="#historia">La finca</a>
+      <a class="link" href="#experiencia">Experiencia</a>
+      <a class="link" href="#galeria">Galería</a>
+      <a class="link" href="#ubicacion">Ubicación</a>
+      <a class="btn btn-primary" href="#eventos">Entradas</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="inicio">
+  <div class="hero-slides" id="heroSlides"></div>
+  <div class="hero-bg"></div>
+  <i class="ast ast-deco" style="top:16%;left:9%;font-size:2rem;"></i>
+  <i class="ast ast-deco" style="top:24%;right:12%;font-size:3.2rem;"></i>
+  <i class="ast ast-deco" style="bottom:26%;left:14%;font-size:2.6rem;"></i>
+  <i class="ast ast-deco" style="bottom:18%;right:10%;font-size:1.6rem;"></i>
+  <div class="wrap">
+    <img class="hero-logo" src="assets/logo-completo-white.png" alt="La Finquita 1920 — Bodega de garage" />
+    <p class="lead">Un pedacito de campo con alma de otra época.</p>
+    <p class="sub">Música <i class="ast" style="font-size:.6em;"></i> Encuentros <i class="ast" style="font-size:.6em;"></i> Al aire libre</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#eventos">Comprar entradas</a>
+      <a class="btn btn-ghost" href="#historia">Conocé la finca</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Descubrí más <i></i></div>
+</section>
+
+<!-- ================= HISTORIA ================= -->
+<section class="historia" id="historia">
+  <div class="wrap historia-grid">
+    <div class="historia-copy reveal">
+      <p class="eyebrow"><i class="ast" style="font-size:.85em;margin-right:.45em;"></i>Nuestra historia</p>
+      <h2>Bodega de garage</h2>
+      <p>La Finquita es una bodega de garage nacida en 1920, un lugar donde se respeta el tiempo y la expresión de la uva para lograr un vino simple y muy cuidado. Ese mismo espíritu define el espacio: campo abierto, sin apuro, hecho para vivirse al aire libre — con vino en mano, música y una buena picada mientras cae el sol.</p>
+      <p class="quote">"Un espacio donde el tiempo va más despacio — y eso es justamente lo que venís a buscar."</p>
+      <div class="stat-row">
+        <div class="stat"><b>1920</b><span>Nuestros orígenes</span></div>
+        <div class="stat"><b>100%</b><span>Al aire libre</span></div>
+        <div class="stat"><b>∞</b><span>Buenos momentos</span></div>
+      </div>
+    </div>
+    <div class="photo-frame"><img src="assets/historia.jpg" alt="La Finquita 1920 — bodega de garage"></div>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCIA ================= -->
+<section class="experiencia" id="experiencia">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">La experiencia</p>
+      <h2>Todo lo que pasa en la finca</h2>
+      <p>Un lugar con historia para vivir noches distintas, al aire libre.</p>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v6m0 0c-3 0-5 2-5 5v7h10v-7c0-3-2-5-5-5Z"/><path d="M12 8c2 0 4-1.5 4-4"/><path d="M12 8c-2 0-4-1.5-4-4"/></svg>
+        <h3>Naturaleza</h3><p>Parque, arboledas y espacios abiertos para desconectar y respirar campo.</p>
+      </div>
+      <div class="exp-card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <h3>Música en vivo</h3><p>Shows y DJ sets al aire libre, en un entorno único bajo las estrellas.</p>
+      </div>
+      <div class="exp-card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v6a6 6 0 0 0 12 0V2"/><path d="M6 8h12"/><path d="M12 14v6"/><path d="M8 22h8"/></svg>
+        <h3>Buena mesa</h3><p>Gastronomía de campo, picadas y algo rico en mano mientras cae la tarde.</p>
+      </div>
+      <div class="exp-card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 21v-4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M12 3l2.2 4.5L19 8l-3.5 3.4.8 4.9L12 14l-4.3 2.3.8-4.9L5 8l4.8-.5L12 3Z"/></svg>
+        <h3>Eventos privados</h3><p>Cumpleaños, casamientos y encuentros de empresa en un lugar con historia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALERÍA ================= -->
+<section class="galeria" id="galeria">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Galería</p>
+      <h2>El lugar habla por sí solo</h2>
+      <p>Un poco de lo que se vive en cada fecha.</p>
+    </div>
+    <div class="gal-grid reveal">
+      <div class="tile big"><img src="assets/g1.jpg" alt="La Finquita 1920" loading="lazy"></div>
+      <div class="tile tall"><img src="assets/g4.jpg" alt="La Finquita 1920" loading="lazy"></div>
+      <div class="tile"><img src="assets/pasado-verde-93.jpg" alt="La Finquita 1920" loading="lazy"></div>
+      <div class="tile"><img src="assets/g2.jpg" alt="La Finquita 1920" loading="lazy"></div>
+      <div class="tile"><img src="assets/g3.jpg" alt="La Finquita 1920" loading="lazy"></div>
+      <div class="tile"><img src="assets/g5.jpg" alt="La Finquita 1920" loading="lazy"></div>
+      <div class="tile"><img src="assets/audioholics.jpg" alt="La Finquita 1920" loading="lazy"></div>
+      <div class="tile"><img src="assets/pasado-verde-99.jpg" alt="La Finquita 1920" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EVENTOS ================= -->
+<section class="eventos" id="eventos">
+  <div class="wrap">
+    <div class="section-head reveal no-ast">
+      <img class="ev-title-logo" src="assets/sunset-white.png" alt="La Finquita Sunset" />
+    </div>
+    <!-- Progreso de la temporada (se calcula solo con la fecha de hoy) -->
+    <div class="season" id="seasonProgress"></div>
+    <!-- Las filas se generan solas desde la lista EVENTOS (ver <script> al final) -->
+    <div class="ev-list" id="eventosList"></div>
+    <div class="ev-more" id="eventosMore" hidden></div>
+    <p class="ev-empty" id="eventosEmpty" hidden>Pronto vamos a anunciar nuevas fechas. ¡Seguinos en Instagram!</p>
+  </div>
+</section>
+
+<!-- ================= UBICACIÓN ================= -->
+<section class="ubicacion" id="ubicacion">
+  <div class="wrap ubi-grid">
+    <div class="ubi-info reveal">
+      <p class="eyebrow"><i class="ast" style="font-size:.85em;margin-right:.45em;"></i>Cómo llegar</p>
+      <h2>Te esperamos en la finca</h2>
+      <div class="row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-6 7-11a7 7 0 1 0-14 0c0 5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <div><b>Dirección</b><p>Manuel Cruz Videla 450 · Cruz de Piedra, Maipú, Mendoza</p></div>
+      </div>
+      <div class="row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <div><b>Horarios</b><p>Desde las 17 horas</p></div>
+      </div>
+      <div class="row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13v5h-2v-2H7v2H5v-5Z"/><circle cx="7.5" cy="15.5" r="1"/><circle cx="16.5" cy="15.5" r="1"/></svg>
+        <div><b>Estacionamiento</b><p>Amplio espacio dentro del predio</p></div>
+      </div>
+      <a class="btn btn-ghost" href="https://maps.google.com/?q=Manuel%20Cruz%20Videla%20450%2C%20Cruz%20de%20Piedra%2C%20Maip%C3%BA%2C%20Mendoza" target="_blank" rel="noopener" style="margin-top:1.6rem;" id="mapBtn">Ver en el mapa</a>
+    </div>
+    <div class="map-frame reveal">
+      <iframe
+        title="Ubicación de La Finquita 1920"
+        src="https://maps.google.com/maps?q=Manuel%20Cruz%20Videla%20450%2C%20Cruz%20de%20Piedra%2C%20Maip%C3%BA%2C%20Mendoza&z=15&output=embed"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="assets/logo-completo-white.png" alt="La Finquita 1920 — Bodega de garage" />
+        <p>Campo, música y buena mesa. Un lugar con historia para vivir noches al aire libre.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Navegación</h4>
+        <a href="#historia">La finca</a>
+        <a href="#experiencia">Experiencia</a>
+        <a href="#galeria">Galería</a>
+        <a href="#ubicacion">Ubicación</a>
+        <a href="#eventos">Entradas</a>
+      </div>
+      <div class="foot-col">
+        <h4>Contacto</h4>
+        <a href="https://wa.me/5492613037617" target="_blank" rel="noopener">WhatsApp: +54 9 2613037617</a>
+        <a href="mailto:lafinquita1920@gmail.com">Email: lafinquita1920@gmail.com</a>
+        <a href="https://www.instagram.com/lafinquita1920/" target="_blank" rel="noopener">Instagram: @lafinquita1920</a>
+        <div class="socials">
+          <a href="https://www.instagram.com/lafinquita1920/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://wa.me/5492613037617" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.8.9.9-2.7-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2a.4.4 0 0 0 0-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3A2.8 2.8 0 0 0 6.9 12a5 5 0 0 0 1 2.6 11 11 0 0 0 4.3 3.8c1.6.6 1.7.4 2 .4a2.5 2.5 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c0-.1-.2-.2-.5-.3Z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> La Finquita 1920. Todos los derechos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 1) Link de Venti general (hero / nav): se toma del <meta name="venti-url">
+  const VENTI_URL = document.querySelector('meta[name="venti-url"]').content.trim();
+  document.querySelectorAll('.js-venti').forEach(a=>{ a.href=VENTI_URL; a.target="_blank"; a.rel="noopener"; });
+
+  /* =============================================================
+     📸  FOTOS DEL HERO — agregá / borrá fotos de esta lista.
+     Se pasan solas con un efecto de fundido. Poné las imágenes en assets/.
+  ============================================================= */
+  const HERO_FOTOS = [
+    "assets/hero-1.webp",
+    "assets/hero-2.jpg",
+    "assets/hero-3.jpg"
+  ];
+  const slidesEl = document.getElementById('heroSlides');
+  if (slidesEl && HERO_FOTOS.length){
+    slidesEl.innerHTML = HERO_FOTOS
+      .map((src,i) => `<div class="hero-slide${i===0?' is-active':''}" style="background-image:url('${src}')"></div>`)
+      .join("");
+    const slides = slidesEl.querySelectorAll('.hero-slide');
+    if (slides.length > 1){
+      let cur = 0;
+      setInterval(() => {
+        slides[cur].classList.remove('is-active');
+        cur = (cur + 1) % slides.length;
+        slides[cur].classList.add('is-active');
+      }, 5000); // cambia de foto cada 5 segundos
+    }
+  }
+
+  /* =============================================================
+     🎟  TUS EVENTOS — editá esta lista (agregá / borrá eventos)
+     Cada evento:
+       titulo   → nombre del evento
+       fecha    → "YYYY-MM-DD" (se muestra el día y mes automáticamente)
+       hora     → "21:00"  (opcional)
+       lugar    → "La Finquita 1920"  (opcional)
+       desc     → descripción corta (opcional)
+       flyer    → "assets/flyer-1.jpg"  (dejá "" para mostrar el logo Sunset)
+       venti    → link de Venti DE ESE evento (dejá "" para usar el link general)
+       especial → true → Edición Especial (se muestra en BORDÓ)
+       cartel   → texto de un cartel llamativo (ej: "Apertura de Temporada")
+       agotado  → true si ya no hay entradas (opcional)
+  ============================================================= */
+  const EVENTOS = [
+    // ---- SEPTIEMBRE ----
+    { titulo:"La Finquita Sunset", fecha:"2026-09-26", lugar:"La Finquita 1920", venti:"", cartel:"Apertura de Temporada" },
+    // ---- OCTUBRE ----
+    { titulo:"La Finquita Sunset", fecha:"2026-10-03", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2026-10-10", lugar:"La Finquita 1920", venti:"", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2026-10-11", lugar:"La Finquita 1920", venti:"", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2026-10-17", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2026-10-24", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2026-10-31", lugar:"La Finquita 1920", venti:"" },
+    // ---- NOVIEMBRE ----
+    { titulo:"La Finquita Sunset", fecha:"2026-11-07", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2026-11-14", lugar:"La Finquita 1920", venti:"" },
+    // ⚠️ DE ACÁ PARA ABAJO SON FECHAS INVENTADAS (placeholder) — ajustá/borrá según el calendario real.
+    { titulo:"La Finquita Sunset", fecha:"2026-11-21", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2026-11-28", lugar:"La Finquita 1920", venti:"" },
+    // ---- DICIEMBRE ----
+    { titulo:"La Finquita Sunset", fecha:"2026-12-05", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2026-12-12", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2026-12-19", lugar:"La Finquita 1920", venti:"", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2026-12-20", lugar:"La Finquita 1920", venti:"", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2026-12-31", lugar:"La Finquita 1920", venti:"", cartel:"Fin de Año" },
+    // ---- ENERO ----
+    { titulo:"La Finquita Sunset", fecha:"2027-01-09", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2027-01-16", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2027-01-23", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2027-01-30", lugar:"La Finquita 1920", venti:"" },
+    // ---- FEBRERO ----
+    { titulo:"La Finquita Sunset", fecha:"2027-02-06", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2027-02-13", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2027-02-20", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2027-02-27", lugar:"La Finquita 1920", venti:"" },
+    // ---- MARZO ----
+    { titulo:"La Finquita Sunset", fecha:"2027-03-06", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2027-03-13", lugar:"La Finquita 1920", venti:"", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2027-03-14", lugar:"La Finquita 1920", venti:"", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2027-03-20", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2027-03-27", lugar:"La Finquita 1920", venti:"" },
+    // ---- ABRIL ----
+    { titulo:"La Finquita Sunset", fecha:"2027-04-03", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2027-04-10", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2027-04-17", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2027-04-24", lugar:"La Finquita 1920", venti:"", cartel:"Cierre de Temporada" }
+  ];
+
+  // --- Render de la lista de eventos (filas compactas agrupadas por mes) ---
+  const MES_CORTO = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"];
+  const MES_LARGO = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  const DOW = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+  const INITIAL = 6; // cuántas fechas se muestran antes de "Ver más"
+
+  const listEl  = document.getElementById('eventosList');
+  const moreEl  = document.getElementById('eventosMore');
+  const emptyEl = document.getElementById('eventosEmpty');
+
+  const SVG_CAL  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>`;
+  const SVG_CLK  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
+  const SVG_PIN  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6 7-11a7 7 0 1 0-14 0c0 5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>`;
+  const SVG_ARR  = `<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>`;
+  // Logo que va en la miniatura de cada evento (logo "La Finquita Sunset").
+  // TODO: reemplazar por "assets/sunset-logo.png" (transparente) cuando esté disponible.
+  const EVENT_LOGO = "assets/sunset-white.png";
+
+  // dated primero (ordenados), luego sin fecha
+  const dated   = EVENTOS.filter(e => e.fecha).sort((a,b) => a.fecha.localeCompare(b.fecha));
+  const undated = EVENTOS.filter(e => !e.fecha);
+  const all     = [...dated, ...undated];
+
+  // "Hoy". ⬇️ Para PREVISUALIZAR otra fecha, cambiá esta línea por, p.ej.:
+  //   const HOY = new Date("2027-01-20T00:00:00");
+  const HOY = new Date(); HOY.setHours(0,0,0,0);
+
+  // la próxima fecha (la primera que todavía no pasó) se destaca
+  const nextEv  = dated.find(e => new Date(e.fecha + "T00:00:00") >= HOY) || null;
+
+  // --- Progreso de temporada (se calcula solo con la fecha de hoy del visitante) ---
+  (function renderSeason(){
+    const el = document.getElementById('seasonProgress');
+    if (!el) return;
+    if (!dated.length){ el.hidden = true; return; }
+    const DAY = 86400000;
+    const parse = s => new Date(s + "T00:00:00");
+    const today = HOY;
+    const total = dated.length;
+    const done = dated.filter(e => parse(e.fecha) < today).length;
+    const upcoming = total - done;
+    const first = parse(dated[0].fecha);
+    const last  = parse(dated[total-1].fecha);
+    const fmt = dt => `${DOW[dt.getDay()]} ${dt.getDate()} ${MES_CORTO[dt.getMonth()]}`;
+    const seasonLabel = first.getFullYear() === last.getFullYear()
+      ? `Temporada ${first.getFullYear()}`
+      : `Temporada ${first.getFullYear()} · ${last.getFullYear()}`;
+    const bar = pct => `<div class="season-bar"><div class="season-fill" style="width:${pct}%"></div></div>
+      <div class="season-labels"><span>${MES_CORTO[first.getMonth()]}</span><span>${seasonLabel}</span><span>${MES_CORTO[last.getMonth()]}</span></div>`;
+    let html;
+    if (done === 0 && today < first){
+      const dias = Math.max(0, Math.ceil((first - today) / DAY));
+      html = `<p class="season-head"><i class="ast"></i> La temporada está por comenzar <i class="ast"></i></p>
+        <p class="season-sub">Apertura ${fmt(first)}${dias ? ` · faltan ${dias} ${dias===1?'día':'días'}` : ' · ¡es hoy!'}</p>${bar(0)}`;
+    } else if (upcoming > 0){
+      const pct = Math.round(done / total * 100);
+      html = `<p class="season-head"><b>${done}</b> ${done===1?'atardecer vivido':'atardeceres vividos'} · <b>${upcoming}</b> por venir</p>${bar(pct)}`;
+    } else {
+      html = `<p class="season-head"><i class="ast"></i> Temporada completa <i class="ast"></i></p>
+        <p class="season-sub">Vivimos las ${total} fechas · nos vemos la próxima temporada</p>${bar(100)}`;
+    }
+    el.innerHTML = html;
+  })();
+
+  function rowHTML(ev){
+    const d = ev.fecha ? new Date(ev.fecha + "T00:00:00") : null;
+    const dd = d ? d.getDate() : "";
+    const mesC = d ? MES_CORTO[d.getMonth()] : "";
+    const dow = d ? DOW[d.getDay()] : "";
+    const link = (ev.venti && ev.venti.trim()) ? ev.venti.trim() : VENTI_URL;
+    const isNext = ev === nextEv;
+
+    const esp = ev.especial ? " especial" : "";
+
+    const thumb = ev.flyer
+      ? `<img src="${ev.flyer}" alt="Flyer ${ev.titulo}" loading="lazy">`
+      : `<div class="ev-logo"><img src="${EVENT_LOGO}" alt="La Finquita Sunset"></div>`;
+
+    const cartel    = ev.cartel ? `<span class="ev-cartel"><i class="ast ast-dark"></i>${ev.cartel}</span>` : "";
+    const tagEsp    = ev.especial ? `<span class="ev-tag"><i class="ast"></i>Edición Especial</span>` : "";
+    const metaFecha = d ? `<span>${SVG_CAL}${dow} ${dd} ${mesC}</span>` : "";
+    const metaHora  = ev.hora ? `<span>${SVG_CLK}${ev.hora} hs</span>` : "";
+    const metaLugar = ev.lugar ? `<span>${SVG_PIN}${ev.lugar}</span>` : "";
+    // el cartel llamativo reemplaza al badge "Próxima fecha" para no duplicar
+    const badge = (isNext && !ev.cartel) ? `<span class="ev-badge"><i class="ast ast-dark"></i>Próxima fecha</span>` : "";
+
+    const tags = (cartel || tagEsp) ? `<div class="ev-tags">${cartel}${tagEsp}</div>` : "";
+    const inner = `
+      <div class="ev-thumb">${thumb}</div>
+      <div class="ev-info">
+        <h3>${ev.titulo}</h3>
+        ${tags}
+        <div class="ev-meta">${metaFecha}${metaHora}${metaLugar}</div>
+      </div>`;
+
+    if (ev.agotado){
+      return `<div class="ev-row${esp}">${inner}<span class="ev-pill soon">Agotado</span>${badge}</div>`;
+    }
+    const pill = `<span class="ev-pill"><span class="txt">Comprar entradas</span>${SVG_ARR}</span>`;
+    return `<a class="ev-row${isNext ? " next" : ""}${esp}" href="${link}" target="_blank" rel="noopener">${inner}${pill}${badge}</a>`;
+  }
+
+  function render(expanded){
+    const visible = expanded ? all : all.slice(0, INITIAL);
+    const groups = [];
+    const idx = {};
+    for (const ev of visible){
+      let key, label;
+      if (ev.fecha){
+        const d = new Date(ev.fecha + "T00:00:00");
+        key = d.getFullYear() + "-" + d.getMonth();
+        label = `${MES_LARGO[d.getMonth()]} <span>${d.getFullYear()}</span>`;
+      } else { key = "soon"; label = `<span>Próximamente</span>`; }
+      if (idx[key] === undefined){ idx[key] = groups.length; groups.push({ label, items:[] }); }
+      groups[idx[key]].items.push(ev);
+    }
+    const showHeads = groups.length > 1;
+    listEl.innerHTML = groups.map(g => `
+      <div class="ev-month">
+        ${showHeads ? `<div class="ev-month-head"><h3><i class="ast"></i> ${g.label} <i class="ast"></i></h3></div>` : ""}
+        <div class="ev-rows">${g.items.map(rowHTML).join("")}</div>
+      </div>`).join("");
+  }
+
+  function updateMore(expanded){
+    if (all.length <= INITIAL){ moreEl.hidden = true; return; }
+    moreEl.hidden = false;
+    const rest = all.length - INITIAL;
+    moreEl.innerHTML = expanded
+      ? `<button class="btn btn-ghost" type="button">Ver menos ↑</button>`
+      : `<button class="btn btn-ghost" type="button">Ver ${rest} ${rest === 1 ? "fecha" : "fechas"} más ↓</button>`;
+    moreEl.querySelector('button').addEventListener('click', () => {
+      const nowExpanded = !expanded;
+      render(nowExpanded);
+      updateMore(nowExpanded);
+      if (!nowExpanded) document.getElementById('eventos').scrollIntoView({ behavior:"smooth" });
+    });
+  }
+
+  if (!all.length){
+    emptyEl.hidden = false;
+  } else {
+    render(false);
+    updateMore(false);
+  }
+
+  // 2) Header con fondo al hacer scroll
+  const header=document.getElementById('header');
+  const onScroll=()=>header.classList.toggle('scrolled',window.scrollY>40);
+  onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+
+  // 3) Menú mobile
+  const toggle=document.getElementById('menuToggle');
+  const links=document.getElementById('navLinks');
+  toggle.addEventListener('click',()=>links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
+
+  // 4) Reveal al hacer scroll
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // 5) Año dinámico
+  document.getElementById('year').textContent=new Date().getFullYear();
+
+  // 6) (Opcional) Botón "Ver en el mapa" → pegá tu link de Google Maps
+  // document.getElementById('mapBtn').href="https://maps.google.com/?q=...";
+</script>
+</body>
+</html>
