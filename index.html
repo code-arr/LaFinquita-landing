@@ -92,7 +92,10 @@
   .nav-links{display:flex;align-items:center;gap:2.2rem;}
   .nav-links a.link{font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);transition:color .2s ease;}
   .nav-links a.link:hover{color:var(--white);}
-  .menu-toggle{display:none;background:none;border:none;color:var(--white);cursor:pointer;}
+  .menu-toggle{display:none;background:none;border:none;color:var(--white);cursor:pointer;position:relative;z-index:2;}
+  .menu-toggle .ic-close{display:none;}
+  .menu-toggle.is-open .ic-open{display:none;}
+  .menu-toggle.is-open .ic-close{display:block;}
 
   /* ---------- Hero ---------- */
   .hero{min-height:100svh;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;padding:7rem 0 4rem;}
@@ -295,7 +298,8 @@
       <a class="btn btn-primary" href="#eventos">Entradas</a>
     </nav>
     <button class="menu-toggle" id="menuToggle" aria-label="Menú">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <svg class="ic-open" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <svg class="ic-close" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
   </div>
 </header>
@@ -708,8 +712,9 @@
   // 3) Menú mobile
   const toggle=document.getElementById('menuToggle');
   const links=document.getElementById('navLinks');
-  toggle.addEventListener('click',()=>links.classList.toggle('open'));
-  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
+  function setMenu(open){ links.classList.toggle('open',open); toggle.classList.toggle('is-open',open); toggle.setAttribute('aria-label', open?'Cerrar menú':'Menú'); }
+  toggle.addEventListener('click',()=>setMenu(!links.classList.contains('open')));
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
 
   // 4) Reveal al hacer scroll
   const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
