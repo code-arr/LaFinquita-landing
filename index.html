@@ -157,6 +157,11 @@
   .exp-card .ic{width:34px;height:34px;color:var(--white);margin-bottom:1rem;}
   .exp-card h3{font-size:1.5rem;margin-bottom:.5rem;}
   .exp-card p{color:var(--muted);font-size:.95rem;}
+  /* tarjeta destacada del Sunset (con logo) */
+  .exp-card-sunset{display:flex;flex-direction:column;border-color:var(--line-strong);background:linear-gradient(180deg,var(--panel-2),var(--panel));}
+  .exp-logo{width:min(190px,80%);height:auto;margin-bottom:1.1rem;}
+  .exp-link{display:inline-block;margin-top:auto;padding-top:1rem;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--white);transition:letter-spacing .3s ease;}
+  .exp-card-sunset:hover .exp-link{letter-spacing:.22em;}
 
   /* ---------- Galería ---------- */
   .gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:180px;gap:.9rem;}
@@ -291,11 +296,11 @@
 <header id="header">
   <div class="wrap nav">
     <nav class="nav-links" id="navLinks">
-      <a class="link" href="#historia">La finca</a>
-      <a class="link" href="#experiencia">Experiencia</a>
+      <a class="link" href="#historia">La bodega</a>
+      <a class="link" href="#eventos">Eventos</a>
       <a class="link" href="#galeria">Galería</a>
       <a class="link" href="#ubicacion">Ubicación</a>
-      <a class="btn btn-primary" href="#eventos">Entradas</a>
+      <a class="btn btn-primary" href="#entradas">Entradas</a>
     </nav>
     <button class="menu-toggle" id="menuToggle" aria-label="Menú">
       <svg class="ic-open" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
@@ -317,7 +322,7 @@
     <p class="lead">Un pedacito de campo con alma de otra época.</p>
     <p class="sub">Música <i class="ast" style="font-size:.6em;"></i> Encuentros <i class="ast" style="font-size:.6em;"></i> Al aire libre</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#eventos">Comprar entradas</a>
+      <a class="btn btn-primary" href="#entradas">Comprar entradas</a>
       <a class="btn btn-ghost" href="#historia">Conocé la finca</a>
     </div>
   </div>
@@ -342,30 +347,29 @@
   </div>
 </section>
 
-<!-- ================= EXPERIENCIA ================= -->
-<section class="experiencia" id="experiencia">
+<!-- ================= EVENTOS (tipos) ================= -->
+<section class="experiencia" id="eventos">
   <div class="wrap">
     <div class="section-head reveal">
-      <p class="eyebrow">La experiencia</p>
-      <h2>Todo lo que pasa en la finca</h2>
-      <p>Un lugar con historia para vivir noches distintas, al aire libre.</p>
+      <p class="eyebrow">Eventos</p>
+      <h2>Tres formas de vivir la finca</h2>
+      <p>Del Sunset a cielo abierto hasta tu propio evento — elegí cómo vivirla.</p>
     </div>
     <div class="exp-grid">
       <div class="exp-card reveal">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v6m0 0c-3 0-5 2-5 5v7h10v-7c0-3-2-5-5-5Z"/><path d="M12 8c2 0 4-1.5 4-4"/><path d="M12 8c-2 0-4-1.5-4-4"/></svg>
-        <h3>Naturaleza</h3><p>Parque, arboledas y espacios abiertos para desconectar y respirar campo.</p>
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18"/><path d="M5 21V7l7-4v18"/><path d="M19 21V11l-7-4"/><path d="M8 9v0M8 12v0M8 15v0"/></svg>
+        <h3>Interempresas</h3>
+        <p>Eventos corporativos y de empresa en un entorno único: reuniones, celebraciones y encuentros rodeados de viñedos.</p>
       </div>
       <div class="exp-card reveal">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        <h3>Música en vivo</h3><p>Shows y DJ sets al aire libre, en un entorno único bajo las estrellas.</p>
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.2 4.5L19 8l-3.5 3.4.8 4.9L12 14l-4.3 2.3.8-4.9L5 8l4.8-.5L12 3Z"/></svg>
+        <h3>Privados</h3>
+        <p>Armá tu Sunset a tu gusto: cumpleaños, casamientos y celebraciones privadas. Vos elegís la fecha y nosotros ponemos la finca.</p>
       </div>
-      <div class="exp-card reveal">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v6a6 6 0 0 0 12 0V2"/><path d="M6 8h12"/><path d="M12 14v6"/><path d="M8 22h8"/></svg>
-        <h3>Buena mesa</h3><p>Gastronomía de campo, picadas y algo rico en mano mientras cae la tarde.</p>
-      </div>
-      <div class="exp-card reveal">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 21v-4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M12 3l2.2 4.5L19 8l-3.5 3.4.8 4.9L12 14l-4.3 2.3.8-4.9L5 8l4.8-.5L12 3Z"/></svg>
-        <h3>Eventos privados</h3><p>Cumpleaños, casamientos y encuentros de empresa en un lugar con historia.</p>
+      <div class="exp-card exp-card-sunset reveal">
+        <img class="exp-logo" src="assets/sunset-white.png" alt="La Finquita Sunset" />
+        <p>Nuestro evento a cielo abierto: música, vino y buena mesa mientras cae el sol. Todos los fines de semana de la temporada.</p>
+        <a class="exp-link" href="#entradas">Ver fechas <span aria-hidden="true">→</span></a>
       </div>
     </div>
   </div>
@@ -393,7 +397,7 @@
 </section>
 
 <!-- ================= EVENTOS ================= -->
-<section class="eventos" id="eventos">
+<section class="eventos" id="entradas">
   <div class="wrap">
     <div class="section-head reveal no-ast">
       <img class="ev-title-logo" src="assets/sunset-white.png" alt="La Finquita Sunset" />
@@ -446,11 +450,11 @@
       </div>
       <div class="foot-col">
         <h4>Navegación</h4>
-        <a href="#historia">La finca</a>
-        <a href="#experiencia">Experiencia</a>
+        <a href="#historia">La bodega</a>
+        <a href="#eventos">Eventos</a>
         <a href="#galeria">Galería</a>
         <a href="#ubicacion">Ubicación</a>
-        <a href="#eventos">Entradas</a>
+        <a href="#entradas">Entradas</a>
       </div>
       <div class="foot-col">
         <h4>Contacto</h4>
@@ -693,7 +697,7 @@
       const nowExpanded = !expanded;
       render(nowExpanded);
       updateMore(nowExpanded);
-      if (!nowExpanded) document.getElementById('eventos').scrollIntoView({ behavior:"smooth" });
+      if (!nowExpanded) document.getElementById('entradas').scrollIntoView({ behavior:"smooth" });
     });
   }
 
