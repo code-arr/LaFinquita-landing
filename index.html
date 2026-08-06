@@ -152,15 +152,18 @@
 
   /* ---------- Experiencia ---------- */
   .exp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;}
-  .exp-card{background:var(--panel);border:1px solid var(--line);padding:2.4rem 1.9rem;transition:transform .3s ease,border-color .3s ease,background .3s ease;}
+  .exp-card{background:var(--panel);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;transition:transform .3s ease,border-color .3s ease,background .3s ease;}
   .exp-card:hover{transform:translateY(-6px);border-color:var(--line-strong);background:var(--panel-2);}
-  .exp-card .ic{width:34px;height:34px;color:var(--white);margin-bottom:1rem;}
+  .exp-photo{aspect-ratio:16/11;overflow:hidden;background:#111;}
+  .exp-photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+  .exp-card:hover .exp-photo img{transform:scale(1.05);}
+  .exp-body{padding:1.7rem 1.8rem 1.9rem;display:flex;flex-direction:column;flex:1;}
   .exp-card h3{font-size:1.5rem;margin-bottom:.5rem;}
   .exp-card p{color:var(--muted);font-size:.95rem;}
   /* tarjeta destacada del Sunset (con logo) */
-  .exp-card-sunset{display:flex;flex-direction:column;border-color:var(--line-strong);background:linear-gradient(180deg,var(--panel-2),var(--panel));}
-  .exp-logo{width:min(190px,80%);height:auto;margin-bottom:1.1rem;}
-  .exp-link{display:inline-block;margin-top:auto;padding-top:1rem;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--white);transition:letter-spacing .3s ease;}
+  .exp-card-sunset{border-color:var(--line-strong);}
+  .exp-logo{width:min(180px,72%);height:auto;margin-bottom:1rem;}
+  .exp-link{display:inline-block;margin-top:auto;padding-top:1.1rem;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--white);transition:letter-spacing .3s ease;}
   .exp-card-sunset:hover .exp-link{letter-spacing:.22em;}
 
   /* ---------- Galería ---------- */
@@ -357,19 +360,26 @@
     </div>
     <div class="exp-grid">
       <div class="exp-card reveal">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18"/><path d="M5 21V7l7-4v18"/><path d="M19 21V11l-7-4"/><path d="M8 9v0M8 12v0M8 15v0"/></svg>
-        <h3>Interempresas</h3>
-        <p>Eventos corporativos y de empresa en un entorno único: reuniones, celebraciones y encuentros rodeados de viñedos.</p>
+        <div class="exp-photo"><img src="assets/g7.jpg" alt="Interempresas — La Finquita 1920" loading="lazy"></div>
+        <div class="exp-body">
+          <h3>Interempresas</h3>
+          <p>Eventos corporativos y de empresa en un entorno único: reuniones, celebraciones y encuentros rodeados de viñedos.</p>
+        </div>
       </div>
       <div class="exp-card reveal">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.2 4.5L19 8l-3.5 3.4.8 4.9L12 14l-4.3 2.3.8-4.9L5 8l4.8-.5L12 3Z"/></svg>
-        <h3>Privados</h3>
-        <p>Armá tu Sunset a tu gusto: cumpleaños, casamientos y celebraciones privadas. Vos elegís la fecha y nosotros ponemos la finca.</p>
+        <div class="exp-photo"><img src="assets/g1.jpg" alt="Eventos privados — La Finquita 1920" loading="lazy"></div>
+        <div class="exp-body">
+          <h3>Privados</h3>
+          <p>Armá tu Sunset a tu gusto: cumpleaños, casamientos y celebraciones privadas. Vos elegís la fecha y nosotros ponemos la finca.</p>
+        </div>
       </div>
       <div class="exp-card exp-card-sunset reveal">
-        <img class="exp-logo" src="assets/sunset-white.png" alt="La Finquita Sunset" />
-        <p>Nuestro evento a cielo abierto: música, vino y buena mesa mientras cae el sol. Todos los fines de semana de la temporada.</p>
-        <a class="exp-link" href="#entradas">Ver fechas <span aria-hidden="true">→</span></a>
+        <div class="exp-photo"><img src="assets/g9.jpg" alt="La Finquita Sunset" loading="lazy"></div>
+        <div class="exp-body">
+          <img class="exp-logo" src="assets/sunset-white.png" alt="La Finquita Sunset" />
+          <p>Nuestro evento a cielo abierto: música, vino y buena mesa mientras cae el sol. Todos los fines de semana de la temporada.</p>
+          <a class="exp-link" href="#entradas">Ver fechas <span aria-hidden="true">→</span></a>
+        </div>
       </div>
     </div>
   </div>
