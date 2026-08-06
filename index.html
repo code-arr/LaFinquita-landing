@@ -178,6 +178,17 @@
   .gal-grid .tile .ph{position:absolute;inset:0;transition:transform .6s ease,filter .4s ease;}
   .gal-grid .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
   .gal-grid .tile:hover .ph,.gal-grid .tile:hover img{transform:scale(1.07);}
+  /* galería por categorías */
+  .gal-cats{display:grid;gap:3.4rem;}
+  .gal-cat-head{display:flex;align-items:center;justify-content:center;gap:1.1rem;margin-bottom:1.6rem;}
+  .gal-cat-head::before,.gal-cat-head::after{content:"";height:1px;width:min(90px,12vw);background:linear-gradient(90deg,transparent,var(--line-strong));}
+  .gal-cat-head::after{background:linear-gradient(90deg,var(--line-strong),transparent);}
+  .gal-cat-head h3{display:flex;align-items:center;gap:.7rem;font-family:var(--serif);font-size:clamp(1.1rem,2.6vw,1.55rem);text-transform:uppercase;letter-spacing:.14em;white-space:nowrap;}
+  .gal-cat-head h3 .ast{width:.78em;height:.78em;}
+  .gal-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.9rem;}
+  .gal-cat-grid .tile{position:relative;aspect-ratio:4/3;overflow:hidden;border:1px solid var(--line);}
+  .gal-cat-grid .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
+  .gal-cat-grid .tile:hover img{transform:scale(1.07);}
 
   /* ---------- Eventos (cards) ---------- */
   .eventos{position:relative;background:var(--panel);border-block:1px solid var(--line);overflow:hidden;}
@@ -407,18 +418,10 @@
     <div class="section-head reveal">
       <p class="eyebrow">Galería</p>
       <h2>El lugar habla por sí solo</h2>
-      <p>Un poco de lo que se vive en cada fecha.</p>
+      <p>Un poco de todo lo que se vive en la finca.</p>
     </div>
-    <div class="gal-grid reveal">
-      <div class="tile big"><img src="assets/g10.jpg" alt="La Finquita 1920" loading="lazy"></div>
-      <div class="tile tall"><img src="assets/g6.jpg" alt="La Finquita 1920" loading="lazy" style="object-position:center 30%"></div>
-      <div class="tile"><img src="assets/g4.jpg" alt="La Finquita 1920" loading="lazy"></div>
-      <div class="tile"><img src="assets/g1.jpg" alt="La Finquita 1920" loading="lazy"></div>
-      <div class="tile"><img src="assets/g9.jpg" alt="La Finquita 1920" loading="lazy"></div>
-      <div class="tile"><img src="assets/g5.jpg" alt="La Finquita 1920" loading="lazy"></div>
-      <div class="tile"><img src="assets/g7.jpg" alt="La Finquita 1920" loading="lazy"></div>
-      <div class="tile"><img src="assets/g8.jpg" alt="La Finquita 1920" loading="lazy"></div>
-    </div>
+    <!-- Las categorías se generan solas desde la lista GALERIA (ver <script>) -->
+    <div class="gal-cats" id="galeriaCats"></div>
   </div>
 </section>
 
@@ -762,6 +765,28 @@
       imgs[cur].classList.add('is-active'); dotEls[cur].classList.add('on');
     }, 3800 + idx * 600);
   });
+
+  /* =============================================================
+     🖼  GALERÍA POR CATEGORÍAS — editá esta lista.
+     Poné las fotos en assets/ y agregá su nombre en la categoría que va.
+     Podés agregar más categorías con el mismo formato.
+  ============================================================= */
+  const GALERIA = [
+    { titulo:"La finca",               fotos:["g10.jpg","hero-3.jpg"] },
+    { titulo:"Paisajes y atardeceres", fotos:["hero-2.jpg","hero-3.jpg"] },
+    { titulo:"Viñedos",                fotos:["g7.jpg","g10.jpg"] },
+    { titulo:"La fiesta",              fotos:["g9.jpg","g8.jpg","g5.jpg","g1.jpg","g6.jpg","hero-1.webp"] }
+  ];
+  const galEl = document.getElementById('galeriaCats');
+  if (galEl){
+    galEl.innerHTML = GALERIA.filter(c => c.fotos && c.fotos.length).map(cat => `
+      <div class="gal-cat">
+        <div class="gal-cat-head"><h3><i class="ast"></i> ${cat.titulo} <i class="ast"></i></h3></div>
+        <div class="gal-cat-grid">
+          ${cat.fotos.map(f => `<div class="tile"><img src="assets/${f}" alt="${cat.titulo} — La Finquita 1920" loading="lazy"></div>`).join('')}
+        </div>
+      </div>`).join('');
+  }
 
   // 4) Reveal al hacer scroll
   const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
