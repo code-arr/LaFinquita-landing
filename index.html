@@ -154,9 +154,13 @@
   .exp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;}
   .exp-card{background:var(--panel);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;transition:transform .3s ease,border-color .3s ease,background .3s ease;}
   .exp-card:hover{transform:translateY(-6px);border-color:var(--line-strong);background:var(--panel-2);}
-  .exp-photo{aspect-ratio:16/11;overflow:hidden;background:#111;}
-  .exp-photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
-  .exp-card:hover .exp-photo img{transform:scale(1.05);}
+  .exp-photo{position:relative;aspect-ratio:16/11;overflow:hidden;background:#111;}
+  .exp-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease,transform .6s ease;}
+  .exp-photo img.is-active{opacity:1;}
+  .exp-card:hover .exp-photo img.is-active{transform:scale(1.05);}
+  .exp-dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:2;}
+  .exp-dots i{width:6px;height:6px;border-radius:50%;background:rgba(244,242,238,.4);transition:background .3s ease;}
+  .exp-dots i.on{background:var(--white);}
   .exp-body{padding:1.7rem 1.8rem 1.9rem;display:flex;flex-direction:column;flex:1;}
   .exp-card h3{font-size:1.5rem;margin-bottom:.5rem;}
   .exp-card p{color:var(--muted);font-size:.95rem;}
@@ -360,21 +364,33 @@
     </div>
     <div class="exp-grid">
       <div class="exp-card reveal">
-        <div class="exp-photo"><img src="assets/g7.jpg" alt="Interempresas — La Finquita 1920" loading="lazy"></div>
+        <div class="exp-photo">
+          <img src="assets/g7.jpg" alt="Interempresas — La Finquita 1920" class="is-active" loading="lazy">
+          <img src="assets/g10.jpg" alt="" loading="lazy">
+          <img src="assets/hero-3.jpg" alt="" loading="lazy">
+        </div>
         <div class="exp-body">
           <h3>Interempresas</h3>
           <p>Eventos corporativos y de empresa en un entorno único: reuniones, celebraciones y encuentros rodeados de viñedos.</p>
         </div>
       </div>
       <div class="exp-card reveal">
-        <div class="exp-photo"><img src="assets/g1.jpg" alt="Eventos privados — La Finquita 1920" loading="lazy"></div>
+        <div class="exp-photo">
+          <img src="assets/g1.jpg" alt="Eventos privados — La Finquita 1920" class="is-active" loading="lazy">
+          <img src="assets/g6.jpg" alt="" loading="lazy">
+          <img src="assets/g4.jpg" alt="" loading="lazy">
+        </div>
         <div class="exp-body">
           <h3>Privados</h3>
           <p>Armá tu Sunset a tu gusto: cumpleaños, casamientos y celebraciones privadas. Vos elegís la fecha y nosotros ponemos la finca.</p>
         </div>
       </div>
       <div class="exp-card exp-card-sunset reveal">
-        <div class="exp-photo"><img src="assets/g9.jpg" alt="La Finquita Sunset" loading="lazy"></div>
+        <div class="exp-photo">
+          <img src="assets/g9.jpg" alt="La Finquita Sunset" class="is-active" loading="lazy">
+          <img src="assets/g8.jpg" alt="" loading="lazy">
+          <img src="assets/g5.jpg" alt="" loading="lazy">
+        </div>
         <div class="exp-body">
           <img class="exp-logo" src="assets/sunset-white.png" alt="La Finquita Sunset" />
           <p>Nuestro evento a cielo abierto: música, vino y buena mesa mientras cae el sol. Todos los fines de semana de la temporada.</p>
@@ -729,6 +745,23 @@
   function setMenu(open){ links.classList.toggle('open',open); toggle.classList.toggle('is-open',open); toggle.setAttribute('aria-label', open?'Cerrar menú':'Menú'); }
   toggle.addEventListener('click',()=>setMenu(!links.classList.contains('open')));
   links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+
+  // 3b) Mini slideshow de fotos en cada tipo de evento
+  document.querySelectorAll('.exp-photo').forEach((ph, idx) => {
+    const imgs = ph.querySelectorAll('img');
+    if (imgs.length < 2) return;
+    const dots = document.createElement('div');
+    dots.className = 'exp-dots';
+    imgs.forEach((_, i) => { const d = document.createElement('i'); if (i === 0) d.classList.add('on'); dots.appendChild(d); });
+    ph.appendChild(dots);
+    const dotEls = dots.querySelectorAll('i');
+    let cur = 0;
+    setInterval(() => {
+      imgs[cur].classList.remove('is-active'); dotEls[cur].classList.remove('on');
+      cur = (cur + 1) % imgs.length;
+      imgs[cur].classList.add('is-active'); dotEls[cur].classList.add('on');
+    }, 3800 + idx * 600);
+  });
 
   // 4) Reveal al hacer scroll
   const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
