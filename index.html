@@ -125,21 +125,29 @@
 
   /* ---------- Historia ---------- */
   .historia{background:var(--panel);border-block:1px solid var(--line);}
-  .historia-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,4.5rem);align-items:center;}
+  .historia-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,3.5rem);align-items:center;}
   .historia-copy h2{font-size:clamp(2rem,4.6vw,3rem);margin:.5rem 0 1rem;}
   .historia-copy p{color:var(--muted);margin-top:1rem;font-size:1.05rem;}
   .historia-copy .quote{font-family:var(--serif);font-style:italic;font-size:clamp(1.35rem,2.8vw,1.8rem);color:var(--white);line-height:1.4;margin-top:1.6rem;padding-left:1.2rem;border-left:2px solid var(--line-strong);}
-  .stat-row{display:flex;gap:2.6rem;margin-top:2.4rem;flex-wrap:wrap;}
-  .stat b{font-family:var(--serif);font-size:2.6rem;display:block;line-height:1;}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:2.4rem;}
+  .stat b{font-family:var(--serif);font-size:clamp(1.9rem,7vw,2.6rem);display:block;line-height:1;}
   .stat span{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
   /* foto tipo vintage: apenas inclinada, marco claro (más grueso abajo) y sombra */
   .photo-frame{position:relative;aspect-ratio:4/5;background:#ece4d1;
     border:11px solid #ece4d1;border-bottom-width:38px;
-    box-shadow:0 26px 55px rgba(0,0,0,.6);
-    transform:rotate(-2.4deg);transition:transform .45s ease;}
-  .photo-frame:hover{transform:rotate(0deg);}
+    box-shadow:0 22px 45px rgba(0,0,0,.55);
+    transform:rotate(var(--rot,-2.4deg));transition:transform .45s ease,box-shadow .3s ease;}
+  .photo-frame:hover{transform:rotate(0deg) scale(1.03);}
   .photo-frame .ph{position:absolute;inset:0;}
   .photo-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  /* pila de cuadros (sección Historia) */
+  .historia-photos{position:relative;width:100%;max-width:500px;margin-inline:auto;aspect-ratio:1/1.14;}
+  .historia-photos .photo-frame{position:absolute;margin:0;box-shadow:0 16px 34px rgba(0,0,0,.55);}
+  .historia-photos .photo-frame:nth-child(1){width:58%;top:9%;left:7%;--rot:-4deg;z-index:5;}
+  .historia-photos .photo-frame:nth-child(2){width:42%;top:0;right:0;--rot:5.5deg;z-index:2;}
+  .historia-photos .photo-frame:nth-child(3){width:40%;bottom:2%;left:0;--rot:4.5deg;z-index:3;}
+  .historia-photos .photo-frame:nth-child(4){width:45%;bottom:0;right:3%;--rot:-5deg;z-index:4;}
+  .historia-photos .photo-frame:hover{z-index:6;box-shadow:0 26px 55px rgba(0,0,0,.7);}
 
   /* placeholders grises (reemplazar por <img> reales) */
   .ph{background-size:cover;background-position:center;filter:grayscale(1) contrast(1.05);}
@@ -167,8 +175,31 @@
   /* tarjeta destacada del Sunset (con logo) */
   .exp-card-sunset{border-color:var(--line-strong);}
   .exp-logo{width:min(180px,72%);height:auto;margin-bottom:1rem;}
-  .exp-link{display:inline-block;margin-top:auto;padding-top:1.1rem;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--white);transition:letter-spacing .3s ease;}
-  .exp-card-sunset:hover .exp-link{letter-spacing:.22em;}
+  .exp-link{display:inline-block;margin-top:auto;padding:1.1rem 0 0;background:none;border:none;cursor:pointer;text-align:left;align-self:flex-start;font-family:var(--sans);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--white);transition:letter-spacing .3s ease;}
+  .exp-card:hover .exp-link{letter-spacing:.22em;}
+  .wpp-btn{display:inline-flex;align-items:center;gap:.55rem;align-self:flex-start;margin-top:1.3rem;padding:.72em 1.35em;background:var(--white);color:var(--black);border-radius:999px;font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;font-weight:600;transition:transform .25s ease;}
+  .wpp-btn:hover{transform:translateY(-3px);}
+  .wpp-btn svg{width:17px;height:17px;}
+  /* modal formulario */
+  .formbox{position:fixed;inset:0;z-index:210;background:rgba(8,8,8,.9);display:flex;align-items:center;justify-content:center;padding:1.2rem;overflow-y:auto;}
+  .formbox[hidden]{display:none;}
+  .form-panel{position:relative;width:min(520px,100%);max-height:92vh;overflow-y:auto;background:var(--panel);border:1px solid var(--line-strong);padding:clamp(1.6rem,4vw,2.6rem);box-shadow:var(--shadow);}
+  .form-close{position:absolute;top:.9rem;right:.9rem;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#fff;cursor:pointer;display:grid;place-items:center;}
+  .form-close svg{width:20px;height:20px;}
+  .form-eyebrow{display:flex;align-items:center;gap:.5rem;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);}
+  .form-eyebrow .ast{width:.9em;height:.9em;}
+  .form-title{font-family:var(--serif);font-size:clamp(1.5rem,4vw,2.1rem);margin:.5rem 0 .3rem;}
+  .form-sub{color:var(--muted);font-size:.95rem;margin-bottom:1.4rem;}
+  #eventoForm{display:grid;gap:1rem;}
+  #eventoForm label{display:grid;gap:.4rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+  #eventoForm .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  #eventoForm input,#eventoForm select,#eventoForm textarea{width:100%;background:var(--black);border:1px solid var(--line-strong);color:var(--white);padding:.75rem .85rem;font-family:var(--sans);font-size:.95rem;letter-spacing:normal;text-transform:none;border-radius:2px;}
+  #eventoForm textarea{resize:vertical;}
+  #eventoForm input:focus,#eventoForm select:focus,#eventoForm textarea:focus{outline:none;border-color:var(--white);}
+  #eventoForm select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239b968d' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .7rem center;background-size:16px;padding-right:2rem;}
+  #eventoForm option{background:var(--black);color:var(--white);}
+  .form-submit{justify-content:center;width:100%;margin-top:.4rem;gap:.6rem;}
+  @media(max-width:480px){ #eventoForm .form-row{grid-template-columns:1fr;} }
 
   /* ---------- Galería ---------- */
   .gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:180px;grid-auto-flow:dense;gap:.9rem;}
@@ -378,7 +409,12 @@
         <div class="stat"><b>∞</b><span>Buenos momentos</span></div>
       </div>
     </div>
-    <div class="photo-frame"><img src="assets/historia.jpg" alt="La Finquita 1920 — bodega de garage"></div>
+    <div class="historia-photos">
+      <div class="photo-frame"><img src="assets/historia1.jpg" alt="La finca — La Finquita 1920" loading="lazy"></div>
+      <div class="photo-frame"><img src="assets/cosecha1.jpg" alt="Cosecha — La Finquita 1920" loading="lazy"></div>
+      <div class="photo-frame"><img src="assets/cosecha2.jpg" alt="Cosecha — La Finquita 1920" loading="lazy"></div>
+      <div class="photo-frame"><img src="assets/cosecha3.jpg" alt="Cosecha — La Finquita 1920" loading="lazy"></div>
+    </div>
   </div>
 </section>
 
@@ -388,18 +424,21 @@
     <div class="section-head reveal">
       <p class="eyebrow">Eventos</p>
       <h2>Tres formas de vivir la finca</h2>
-      <p>Del Sunset a cielo abierto hasta tu propio evento — elegí cómo vivirla.</p>
     </div>
     <div class="exp-grid">
       <div class="exp-card reveal">
         <div class="exp-photo">
-          <img src="assets/g7.jpg" alt="Interempresas — La Finquita 1920" class="is-active" loading="lazy">
+          <img src="assets/g7.jpg" alt="Corporativos — La Finquita 1920" class="is-active" loading="lazy">
           <img src="assets/g10.jpg" alt="" loading="lazy">
           <img src="assets/hero-3.jpg" alt="" loading="lazy">
         </div>
         <div class="exp-body">
-          <h3>Interempresas</h3>
-          <p>Eventos corporativos y de empresa en un entorno único: reuniones, celebraciones y encuentros rodeados de viñedos.</p>
+          <h3>Corporativos</h3>
+          <p>Reuniones, lanzamientos, cenas de fin de año y team building en una finca a cielo abierto rodeada de viñedos. Nos adaptamos a tu grupo, con gastronomía, vino propio y todo el entorno de La Finquita.</p>
+          <a class="wpp-btn" href="https://wa.me/5492613037617?text=Hola%20La%20Finquita%201920!%20Quiero%20consultar%20por%20un%20evento%20corporativo%20%2F%20de%20empresa." target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.8.9.9-2.7-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2a.4.4 0 0 0 0-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3A2.8 2.8 0 0 0 6.9 12a5 5 0 0 0 1 2.6 11 11 0 0 0 4.3 3.8c1.6.6 1.7.4 2 .4a2.5 2.5 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c0-.1-.2-.2-.5-.3Z"/></svg>
+            Consultas
+          </a>
         </div>
       </div>
       <div class="exp-card reveal">
@@ -411,6 +450,7 @@
         <div class="exp-body">
           <h3>Privados</h3>
           <p>Armá tu Sunset a tu gusto: cumpleaños, casamientos y celebraciones privadas. Vos elegís la fecha y nosotros ponemos la finca.</p>
+          <button class="exp-link" type="button" data-form-open>Pedí tu evento <span aria-hidden="true">→</span></button>
         </div>
       </div>
       <div class="exp-card exp-card-sunset reveal">
@@ -527,6 +567,51 @@
   <img class="lb-img" id="lbImg" src="" alt="" />
   <button class="lb-next" id="lbNext" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
   <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<!-- ================= FORMULARIO DE EVENTOS PRIVADOS ================= -->
+<div class="formbox" id="formbox" hidden>
+  <div class="form-panel">
+    <button class="form-close" id="formClose" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <p class="form-eyebrow"><i class="ast"></i> Consultá tu evento</p>
+    <h3 class="form-title">Armemos tu evento en la finca</h3>
+    <p class="form-sub">Contanos qué tenés en mente y te respondemos por WhatsApp.</p>
+    <form id="eventoForm">
+      <label>Nombre y apellido
+        <input type="text" name="nombre" required placeholder="Tu nombre">
+      </label>
+      <div class="form-row">
+        <label>Tipo de evento
+          <select name="tipo" required>
+            <option value="">Elegí una opción…</option>
+            <option>Cumpleaños</option>
+            <option>Casamiento</option>
+            <option>Aniversario</option>
+            <option>Evento de empresa</option>
+            <option>Otro</option>
+          </select>
+        </label>
+        <label>Cantidad de personas
+          <select name="personas">
+            <option>Menos de 50</option>
+            <option>50 a 100</option>
+            <option>100 a 200</option>
+            <option>Más de 200</option>
+          </select>
+        </label>
+      </div>
+      <label>Fecha tentativa
+        <input type="text" name="fecha" placeholder="Ej: sábado 15/11 (o el mes)">
+      </label>
+      <label>Mensaje (opcional)
+        <textarea name="mensaje" rows="3" placeholder="Contanos un poco más…"></textarea>
+      </label>
+      <button type="submit" class="btn btn-primary form-submit">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.8.9.9-2.7-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2a.4.4 0 0 0 0-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3A2.8 2.8 0 0 0 6.9 12a5 5 0 0 0 1 2.6 11 11 0 0 0 4.3 3.8c1.6.6 1.7.4 2 .4a2.5 2.5 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c0-.1-.2-.2-.5-.3Z"/></svg>
+        Consultar por WhatsApp
+      </button>
+    </form>
+  </div>
 </div>
 
 <script>
@@ -799,10 +884,11 @@
      Podés agregar más categorías con el mismo formato.
   ============================================================= */
   const GALERIA = [
-    { titulo:"La finca",               sub:"El salón, los espacios y el corazón del lugar.", fotos:["g10.jpg","hero-3.jpg","g7.jpg"] },
-    { titulo:"Paisajes y atardeceres", sub:"El cielo de Mendoza cuando cae el sol.",          fotos:["hero-2.jpg","hero-3.jpg","g10.jpg"] },
-    { titulo:"Viñedos",                sub:"Entre las vides, a cielo abierto.",                fotos:["g7.jpg","g10.jpg"] },
-    { titulo:"La fiesta",              sub:"Música, gente y noches que se estiran.",           fotos:["g9.jpg","g8.jpg","g5.jpg","g1.jpg","g6.jpg","g4.jpg","hero-1.webp"] }
+    { titulo:"La finca",               sub:"Los espacios, los viñedos y el corazón del lugar.", fotos:["g10.jpg","hero-3.jpg","g7.jpg"] },
+    { titulo:"Paisajes y atardeceres", sub:"El cielo de Mendoza cuando cae el sol.",             fotos:["hero-2.jpg","hero-3.jpg","g10.jpg"] },
+    { titulo:"Nuestro personal",       sub:"El equipo que hace que todo pase.",                  fotos:["g6.jpg"] },
+    { titulo:"Salones",                sub:"Espacios, mobiliario y nuestros sillones.",          fotos:["g10.jpg","hero-3.jpg"] },
+    { titulo:"La fiesta",              sub:"Música, gente y noches que se estiran.",             fotos:["g9.jpg","g8.jpg","g5.jpg","g1.jpg","g6.jpg","g4.jpg","hero-1.webp"] }
   ];
   const galEl = document.getElementById('galeriaCats');
   const cats = GALERIA.filter(c => c.fotos && c.fotos.length);
@@ -810,7 +896,7 @@
   const SVG_EXPAND = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>`;
   if (galEl && cats.length){
     galEl.innerHTML = `<div class="gal-grid">` + cats.map((cat, i) => {
-      const cls = i === 0 ? 'tile big' : (i === 2 ? 'tile tall' : 'tile');
+      const cls = i === 0 ? 'tile big' : 'tile';
       return `<button type="button" class="gal-card ${cls}" data-i="${i}">
         <img src="assets/${cat.fotos[0]}" alt="${cat.titulo} — La Finquita 1920" loading="lazy">
         <span class="gal-count">${SVG_STACK}${cat.fotos.length}</span>
@@ -838,6 +924,33 @@
   let lbTx = 0;
   lb.addEventListener('touchstart', e => { lbTx = e.touches[0].clientX; }, { passive:true });
   lb.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - lbTx; if (Math.abs(dx) > 40) lbShow(lbIdx + (dx < 0 ? 1 : -1)); }, { passive:true });
+
+  // --- Formulario de eventos → WhatsApp ---
+  const WPP = '5492613037617';
+  const formbox = document.getElementById('formbox');
+  const eventoForm = document.getElementById('eventoForm');
+  function formOpen(tipo){
+    if (tipo) { const s = eventoForm.querySelector('[name="tipo"]'); if ([...s.options].some(o => o.value === tipo)) s.value = tipo; }
+    formbox.hidden = false; document.body.style.overflow = 'hidden';
+  }
+  function formClose(){ formbox.hidden = true; document.body.style.overflow = ''; }
+  document.querySelectorAll('[data-form-open]').forEach(b => b.addEventListener('click', () => formOpen(b.dataset.tipo)));
+  document.getElementById('formClose').addEventListener('click', formClose);
+  formbox.addEventListener('click', e => { if (e.target === formbox) formClose(); });
+  document.addEventListener('keydown', e => { if (!formbox.hidden && e.key === 'Escape') formClose(); });
+  eventoForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const d = new FormData(eventoForm);
+    const linea = (etq, val) => val ? `\n• ${etq}: ${val}` : '';
+    const msg = '¡Hola La Finquita 1920! 👋 Quiero consultar por un evento:' +
+      linea('Nombre', d.get('nombre')) +
+      linea('Tipo de evento', d.get('tipo')) +
+      linea('Cantidad de personas', d.get('personas')) +
+      linea('Fecha tentativa', d.get('fecha')) +
+      linea('Mensaje', d.get('mensaje'));
+    window.open('https://wa.me/' + WPP + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    formClose();
+  });
 
   // 4) Reveal al hacer scroll
   const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
