@@ -141,13 +141,25 @@
   .photo-frame .ph{position:absolute;inset:0;}
   .photo-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
   /* pila de cuadros (sección Historia) */
-  .historia-photos{position:relative;width:100%;max-width:500px;margin-inline:auto;aspect-ratio:1/1.14;}
-  .historia-photos .photo-frame{position:absolute;margin:0;box-shadow:0 16px 34px rgba(0,0,0,.55);}
-  .historia-photos .photo-frame:nth-child(1){width:58%;top:9%;left:7%;--rot:-4deg;z-index:5;}
-  .historia-photos .photo-frame:nth-child(2){width:42%;top:0;right:0;--rot:5.5deg;z-index:2;}
-  .historia-photos .photo-frame:nth-child(3){width:40%;bottom:2%;left:0;--rot:4.5deg;z-index:3;}
-  .historia-photos .photo-frame:nth-child(4){width:45%;bottom:0;right:3%;--rot:-5deg;z-index:4;}
-  .historia-photos .photo-frame:hover{z-index:6;box-shadow:0 26px 55px rgba(0,0,0,.7);}
+  .historia-banner{position:relative;min-width:0;}
+  .historia-strip{display:grid;grid-auto-flow:column;grid-template-rows:repeat(3,1fr);grid-auto-columns:clamp(96px,12vw,128px);gap:.5rem;height:clamp(300px,38vw,420px);min-width:0;max-width:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none;cursor:grab;-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent);}
+  .historia-strip::-webkit-scrollbar{display:none;}
+  .historia-strip.dragging{cursor:grabbing;}
+  .historia-strip.dragging img{pointer-events:none;}
+  .hs-item{width:100%;height:100%;overflow:hidden;border:1px solid var(--line);scroll-snap-align:start;position:relative;background:#111;cursor:pointer;}
+  .hs-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+  .hs-item:hover img{transform:scale(1.06);}
+  .hs-item::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .3s ease;}
+  .hs-item:hover::after{background:rgba(0,0,0,.12);}
+  .hs-viewport{position:relative;}
+  .hs-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:44px;height:44px;border-radius:50%;background:rgba(10,10,10,.72);backdrop-filter:blur(6px);border:1px solid var(--line-strong);color:#fff;cursor:pointer;display:grid;place-items:center;transition:background .2s ease,transform .2s ease;}
+  .hs-arrow:hover{background:rgba(10,10,10,.95);}
+  .hs-prev{left:-8px;} .hs-next{right:-8px;}
+  .hs-arrow svg{width:22px;height:22px;}
+  @media(max-width:860px){ .hs-arrow{display:none;} }
+  .historia-hint{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.9rem;color:var(--muted);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;}
+  .historia-hint svg{width:20px;height:14px;}
+  @media(max-width:860px){ .historia-strip{height:auto;grid-template-rows:repeat(3,29vw);grid-auto-columns:29vw;gap:.45rem;} }
 
   /* placeholders grises (reemplazar por <img> reales) */
   .ph{background-size:cover;background-position:center;filter:grayscale(1) contrast(1.05);}
@@ -245,6 +257,10 @@
   .eventos{position:relative;background:var(--panel);border-block:1px solid var(--line);overflow:hidden;}
   .ev-list{position:relative;z-index:2;display:grid;gap:2.6rem;}
   .ev-empty{text-align:center;color:var(--muted);font-family:var(--serif);font-style:italic;font-size:1.3rem;padding:2rem 0;}
+  .ev-locked{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;padding:2.6rem 1rem;border:1px solid var(--line);background:repeating-linear-gradient(45deg,rgba(244,242,238,.02) 0 12px,transparent 12px 24px);color:var(--muted);text-align:center;}
+  .ev-locked svg{width:30px;height:30px;opacity:.8;}
+  .ev-locked b{font-family:var(--serif);font-weight:600;font-size:clamp(1.3rem,3vw,1.7rem);letter-spacing:.14em;text-transform:uppercase;color:var(--white);}
+  .ev-locked span{font-size:.85rem;color:var(--muted);}
   .ev-month{display:grid;gap:1rem;}
   .ev-month-head{display:flex;align-items:center;justify-content:center;gap:1.1rem;margin-bottom:.4rem;}
   .ev-month-head::before,.ev-month-head::after{content:"";height:1px;width:min(90px,12vw);background:linear-gradient(90deg,transparent,var(--line-strong));}
@@ -388,10 +404,6 @@
   <i class="ast ast-deco" style="bottom:18%;right:10%;font-size:1.6rem;"></i>
   <div class="wrap">
     <img class="hero-logo" src="assets/logo-completo-white.png" alt="La Finquita 1920 — Bodega de garage" />
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="#entradas">Comprar entradas</a>
-      <a class="btn btn-ghost" href="#historia">Conocé la finca</a>
-    </div>
   </div>
   <div class="scroll-hint">Descubrí más <i></i></div>
 </section>
@@ -404,17 +416,14 @@
       <h2>Bodega de garage</h2>
       <p>La Finquita es una bodega de garage nacida en 1920, un lugar donde se respeta el tiempo y la expresión de la uva para lograr un vino simple y muy cuidado. Ese mismo espíritu define el espacio: campo abierto, sin apuro, hecho para vivirse al aire libre — con vino en mano, música y una buena picada mientras cae el sol.</p>
       <p class="quote">"Un espacio donde el tiempo va más despacio — y eso es justamente lo que venís a buscar."</p>
-      <div class="stat-row">
-        <div class="stat"><b>1920</b><span>Nuestros orígenes</span></div>
-        <div class="stat"><b>100%</b><span>Al aire libre</span></div>
-        <div class="stat"><b>∞</b><span>Buenos momentos</span></div>
-      </div>
     </div>
-    <div class="historia-photos">
-      <div class="photo-frame"><img src="assets/historia1.jpg" alt="La finca — La Finquita 1920" loading="lazy"></div>
-      <div class="photo-frame"><img src="assets/bodega1.jpg" alt="Cosecha — La Finquita 1920" loading="lazy"></div>
-      <div class="photo-frame"><img src="assets/bodega2.jpg" alt="Vinos La Finquita 1920" loading="lazy"></div>
-      <div class="photo-frame"><img src="assets/cosecha3.jpg" alt="Cosecha — La Finquita 1920" loading="lazy"></div>
+    <div class="historia-banner">
+      <div class="hs-viewport">
+        <div class="historia-strip" id="historiaStrip"></div>
+        <button class="hs-arrow hs-prev" id="hsPrev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="hs-arrow hs-next" id="hsNext" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <p class="historia-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-4 5 4 5M16 7l4 5-4 5"/></svg> Deslizá o usá las flechas</p>
     </div>
   </div>
 </section>
@@ -423,35 +432,21 @@
 <section class="experiencia" id="eventos">
   <div class="wrap">
     <div class="section-head reveal">
-      <p class="eyebrow">Eventos</p>
-      <h2>Tres formas de vivir la finca</h2>
+      <p class="eyebrow">Eventos y Sunsets</p>
     </div>
     <div class="exp-grid">
       <div class="exp-card reveal">
         <div class="exp-photo">
-          <img src="assets/corpo1.jpg" alt="Corporativos — La Finquita 1920" class="is-active" loading="lazy">
-          <img src="assets/corpo2.jpg" alt="" loading="lazy">
+          <img src="assets/corpo1.jpg" alt="Corporativos y sociales — La Finquita 1920" class="is-active" loading="lazy">
+          <img src="assets/privado1.jpg" alt="" loading="lazy">
           <img src="assets/corpo3.jpg" alt="" loading="lazy">
-        </div>
-        <div class="exp-body">
-          <h3>Corporativos</h3>
-          <p>El espacio para tu empresa como escenario único para vivir experiencias de otro nivel.</p>
-          <a class="wpp-btn" href="https://wa.me/5492613037617?text=Hola%20La%20Finquita%201920!%20Quiero%20consultar%20por%20un%20evento%20corporativo%20%2F%20de%20empresa." target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.8.9.9-2.7-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2a.4.4 0 0 0 0-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3A2.8 2.8 0 0 0 6.9 12a5 5 0 0 0 1 2.6 11 11 0 0 0 4.3 3.8c1.6.6 1.7.4 2 .4a2.5 2.5 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c0-.1-.2-.2-.5-.3Z"/></svg>
-            Consultas
-          </a>
-        </div>
-      </div>
-      <div class="exp-card reveal">
-        <div class="exp-photo">
-          <img src="assets/privado1.jpg" alt="Eventos privados — La Finquita 1920" class="is-active" loading="lazy">
-          <img src="assets/privado2.jpg" alt="" loading="lazy">
           <img src="assets/privado3.jpg" alt="" loading="lazy">
+          <img src="assets/corpo2.jpg" alt="" loading="lazy">
           <img src="assets/privado4.jpg" alt="" loading="lazy">
         </div>
         <div class="exp-body">
-          <h3>Privados</h3>
-          <p>Un sunset exclusivo entre viñedos, con vino, gastronomía, música y el encanto de La Finquita 1920. Una experiencia personalizada para celebrar, compartir y disfrutar momentos especiales.</p>
+          <h3>Corporativos y Sociales</h3>
+          <p>Desde eventos de empresa —reuniones, lanzamientos y cenas— hasta tu celebración privada: cumpleaños, casamientos y encuentros. Una experiencia a medida entre viñedos, con vino propio, gastronomía y todo el encanto de La Finquita 1920.</p>
           <button class="exp-link" type="button" data-form-open>Pedí tu evento <span aria-hidden="true">→</span></button>
         </div>
       </div>
@@ -463,7 +458,7 @@
           <img src="assets/sunset4.jpg" alt="" loading="lazy">
         </div>
         <div class="exp-body">
-          <img class="exp-logo" src="assets/sunset-white.png" alt="La Finquita Sunset" />
+          <h3>Sunsets</h3>
           <p>Los sábados y fines de semana largos. La experiencia del atardecer que explota en fiesta. Sold-outs, energía y el ritual.</p>
           <a class="exp-link" href="#entradas">Ver fechas <span aria-hidden="true">→</span></a>
         </div>
@@ -535,7 +530,6 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <img src="assets/logo-completo-white.png" alt="La Finquita 1920 — Bodega de garage" />
-        <p>Campo, música y buena mesa. Un lugar con historia para vivir noches al aire libre.</p>
       </div>
       <div class="foot-col">
         <h4>Navegación</h4>
@@ -548,7 +542,7 @@
       <div class="foot-col">
         <h4>Contacto</h4>
         <a href="https://wa.me/5492613037617" target="_blank" rel="noopener">WhatsApp: +54 9 2613037617</a>
-        <a href="mailto:lafinquita1920@gmail.com">Email: lafinquita1920@gmail.com</a>
+        <a href="mailto:Contacto@lafinquita1920.com">Email: Contacto@lafinquita1920.com</a>
         <a href="https://www.instagram.com/lafinquita1920/" target="_blank" rel="noopener">Instagram: @lafinquita1920</a>
         <div class="socials">
           <a href="https://www.instagram.com/lafinquita1920/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
@@ -687,27 +681,8 @@
     { titulo:"La Finquita Sunset", fecha:"2026-12-19", lugar:"La Finquita 1920", venti:"", especial:true },
     { titulo:"La Finquita Sunset", fecha:"2026-12-20", lugar:"La Finquita 1920", venti:"", especial:true },
     { titulo:"La Finquita Sunset", fecha:"2026-12-31", lugar:"La Finquita 1920", venti:"", cartel:"Fin de Año" },
-    // ---- ENERO ----
-    { titulo:"La Finquita Sunset", fecha:"2027-01-09", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2027-01-16", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2027-01-23", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2027-01-30", lugar:"La Finquita 1920", venti:"" },
-    // ---- FEBRERO ----
-    { titulo:"La Finquita Sunset", fecha:"2027-02-06", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2027-02-13", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2027-02-20", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2027-02-27", lugar:"La Finquita 1920", venti:"" },
-    // ---- MARZO ----
-    { titulo:"La Finquita Sunset", fecha:"2027-03-06", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2027-03-13", lugar:"La Finquita 1920", venti:"", especial:true },
-    { titulo:"La Finquita Sunset", fecha:"2027-03-14", lugar:"La Finquita 1920", venti:"", especial:true },
-    { titulo:"La Finquita Sunset", fecha:"2027-03-20", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2027-03-27", lugar:"La Finquita 1920", venti:"" },
-    // ---- ABRIL ----
-    { titulo:"La Finquita Sunset", fecha:"2027-04-03", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2027-04-10", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2027-04-17", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2027-04-24", lugar:"La Finquita 1920", venti:"", cartel:"Cierre de Temporada" }
+    // Enero en adelante: bloque "Próximamente" bloqueado (sin fechas todavía).
+    { proximamente:true, mes:"Enero", anio:2027 }
   ];
 
   // --- Render de la lista de eventos (filas compactas agrupadas por mes) ---
@@ -817,27 +792,29 @@
     const groups = [];
     const idx = {};
     for (const ev of visible){
-      let key, label;
+      let key, label, soon = false;
       if (ev.fecha){
         const d = new Date(ev.fecha + "T00:00:00");
         key = d.getFullYear() + "-" + d.getMonth();
         label = `${MES_LARGO[d.getMonth()]} <span>${d.getFullYear()}</span>`;
-      } else { key = "soon"; label = `<span>Próximamente</span>`; }
-      if (idx[key] === undefined){ idx[key] = groups.length; groups.push({ label, items:[] }); }
+      } else { key = "soon"; label = ev.mes ? `${ev.mes} <span>${ev.anio || ''}</span>` : `<span>Próximamente</span>`; soon = true; }
+      if (idx[key] === undefined){ idx[key] = groups.length; groups.push({ label, items:[], soon }); }
       groups[idx[key]].items.push(ev);
     }
     const showHeads = groups.length > 1;
-    listEl.innerHTML = groups.map(g => `
-      <div class="ev-month">
-        ${showHeads ? `<div class="ev-month-head"><h3><i class="ast"></i> ${g.label} <i class="ast"></i></h3></div>` : ""}
-        <div class="ev-rows">${g.items.map(rowHTML).join("")}</div>
-      </div>`).join("");
+    listEl.innerHTML = groups.map(g => {
+      const head = showHeads ? `<div class="ev-month-head"><h3><i class="ast"></i> ${g.label} <i class="ast"></i></h3></div>` : "";
+      const body = g.soon
+        ? `<div class="ev-locked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4.5" y="11" width="15" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><b>Próximamente</b><span>Las fechas de enero se anuncian pronto</span></div>`
+        : `<div class="ev-rows">${g.items.map(rowHTML).join("")}</div>`;
+      return `<div class="ev-month">${head}${body}</div>`;
+    }).join("");
   }
 
   function updateMore(expanded){
     if (all.length <= INITIAL){ moreEl.hidden = true; return; }
     moreEl.hidden = false;
-    const rest = all.length - INITIAL;
+    const rest = Math.max(1, dated.length - INITIAL);
     moreEl.innerHTML = expanded
       ? `<button class="btn btn-ghost" type="button">Ver menos ↑</button>`
       : `<button class="btn btn-ghost" type="button">Ver ${rest} ${rest === 1 ? "fecha" : "fechas"} más ↓</button>`;
@@ -893,7 +870,7 @@
   const GALERIA = [
     { titulo:"La finca",               sub:"Los espacios, los viñedos y el corazón del lugar.", fotos:["g10.jpg","hero-3.jpg","g7.jpg"] },
     { titulo:"Paisajes y atardeceres", sub:"El cielo de Mendoza cuando cae el sol.",             fotos:["hero-2.jpg","hero-3.jpg","g10.jpg"] },
-    { titulo:"Nuestro personal",       sub:"El equipo que hace que todo pase.",                  fotos:["g6.jpg"] },
+    { titulo:"La bodega",              sub:"Vino de garage, hecho con tiempo.",                  fotos:["bodega2.jpg","bodega1.jpg","historia1.jpg"] },
     { titulo:"Salones",                sub:"Espacios, mobiliario y nuestros sillones.",          fotos:["g10.jpg","hero-3.jpg"] },
     { titulo:"La fiesta",              sub:"Música, gente y noches que se estiran.",             fotos:["g9.jpg","g8.jpg","g5.jpg","g1.jpg","g6.jpg","g4.jpg","hero-1.webp"] }
   ];
@@ -931,6 +908,34 @@
   let lbTx = 0;
   lb.addEventListener('touchstart', e => { lbTx = e.touches[0].clientX; }, { passive:true });
   lb.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - lbTx; if (Math.abs(dx) > 40) lbShow(lbIdx + (dx < 0 ? 1 : -1)); }, { passive:true });
+
+  /* --- Tira de fotos de la Bodega (banner deslizable, click para agrandar) --- */
+  const HISTORIA_FOTOS = ["historia1.jpg","g10.jpg","g7.jpg","hero-3.jpg","hero-2.jpg","bodega1.jpg","bodega2.jpg","cosecha3.jpg","g6.jpg","g1.jpg","corpo1.jpg","corpo2.jpg","corpo3.jpg","privado1.jpg","privado2.jpg","privado3.jpg","privado4.jpg","sunset1.jpg","sunset2.jpg","sunset3.jpg","sunset4.jpg","g9.jpg","g8.jpg","g5.jpg","g4.jpg"];
+  const strip = document.getElementById('historiaStrip');
+  if (strip && HISTORIA_FOTOS.length){
+    const N = HISTORIA_FOTOS.length;
+    const one = HISTORIA_FOTOS.map(f => `<div class="hs-item"><img src="assets/${f}" alt="La Finquita 1920" loading="lazy"></div>`).join('');
+    strip.innerHTML = one + one + one; // 3 copias → loop infinito
+    strip.querySelectorAll('.hs-item').forEach((it, i) => it.addEventListener('click', () => {
+      lbOpen({ titulo:"La finca", fotos:HISTORIA_FOTOS });
+      lbShow(i % N);
+    }));
+    // loop infinito: nos mantenemos en la copia del medio
+    let setW = 0;
+    const setup = () => { setW = strip.scrollWidth / 3; strip.scrollLeft = setW; };
+    requestAnimationFrame(setup);
+    window.addEventListener('resize', setup);
+    strip.addEventListener('scroll', () => {
+      if (!setW) return;
+      if (strip.scrollLeft < setW * 0.5) strip.scrollLeft += setW;
+      else if (strip.scrollLeft > setW * 1.5) strip.scrollLeft -= setW;
+    }, { passive:true });
+    // flechas (PC)
+    const step = () => Math.max(200, strip.clientWidth * 0.75);
+    document.getElementById('hsPrev').addEventListener('click', () => strip.scrollBy({ left: -step(), behavior:'smooth' }));
+    document.getElementById('hsNext').addEventListener('click', () => strip.scrollBy({ left: step(), behavior:'smooth' }));
+    strip.addEventListener('wheel', e => { if (e.deltaY && !e.shiftKey){ strip.scrollLeft += e.deltaY; e.preventDefault(); } }, { passive:false });
+  }
 
   // --- Formulario de eventos → WhatsApp ---
   const WPP = '5492613037617';
