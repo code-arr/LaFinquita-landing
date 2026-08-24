@@ -30,6 +30,8 @@
     --line-strong:rgba(244,242,238,.24);
     --bordo:#7c1f1f;               /* Ediciones Especiales */
     --bordo-line:rgba(150,40,40,.55);
+    --morado:#4a2d7a;              /* Interempresas */
+    --morado-line:rgba(130,90,200,.55);
     --shadow:0 30px 70px rgba(0,0,0,.6);
     --serif:"Playfair Display", Georgia, serif;
     --sans:"Jost", system-ui, sans-serif;
@@ -300,6 +302,12 @@
   .ev-row.especial .ev-logo{background:var(--bordo);}
   .ev-row.especial .ev-pill{border-color:var(--bordo-line);}
   .ev-row.especial:hover .ev-pill{background:var(--bordo);color:#fff;border-color:var(--bordo);}
+  .ev-row.interempresas{border-color:var(--morado-line);background:rgba(74,45,122,.14);}
+  .ev-row.interempresas:hover{border-color:var(--morado);background:rgba(74,45,122,.24);}
+  .ev-row.interempresas .ev-logo{background:var(--morado);}
+  .ev-row.interempresas .ev-pill{border-color:var(--morado-line);}
+  .ev-row.interempresas:hover .ev-pill{background:var(--morado);color:#fff;border-color:var(--morado);}
+  .ev-tag.int{background:var(--morado);}
   .ev-tags{display:flex;flex-wrap:wrap;gap:.4rem;}
   .ev-tag{display:inline-flex;align-items:center;gap:.4rem;background:var(--bordo);color:#fff;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.18rem .5rem;border-radius:3px;}
   .ev-tag .ast{width:.85em;height:.85em;}
@@ -437,6 +445,19 @@
       <p class="eyebrow">Eventos y Sunsets</p>
     </div>
     <div class="exp-grid">
+      <div class="exp-card exp-card-sunset reveal">
+        <div class="exp-photo">
+          <img src="assets/sunset1.jpg" alt="La Finquita Sunset" class="is-active" loading="lazy">
+          <img src="assets/sunset2.jpg" alt="" loading="lazy">
+          <img src="assets/sunset3.jpg" alt="" loading="lazy">
+          <img src="assets/sunset4.jpg" alt="" loading="lazy">
+        </div>
+        <div class="exp-body">
+          <h3>Sunsets</h3>
+          <p>Los sábados y fines de semana largos. La experiencia del atardecer que explota en fiesta. Sold-outs, energía y el ritual.</p>
+          <a class="exp-link" href="#entradas">Ver fechas <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
       <div class="exp-card reveal">
         <div class="exp-photo">
           <img src="assets/corpo1.jpg" alt="Corporativos y sociales — La Finquita 1920" class="is-active" loading="lazy">
@@ -450,19 +471,6 @@
           <h3>Corporativos y Sociales</h3>
           <p>Desde eventos de empresa —reuniones, lanzamientos y cenas— hasta tu celebración privada: cumpleaños, casamientos y encuentros. Una experiencia a medida entre viñedos, con vino propio, gastronomía y todo el encanto de La Finquita 1920.</p>
           <button class="exp-link" type="button" data-form-open>Hablemos de tu evento <span aria-hidden="true">→</span></button>
-        </div>
-      </div>
-      <div class="exp-card exp-card-sunset reveal">
-        <div class="exp-photo">
-          <img src="assets/sunset1.jpg" alt="La Finquita Sunset" class="is-active" loading="lazy">
-          <img src="assets/sunset2.jpg" alt="" loading="lazy">
-          <img src="assets/sunset3.jpg" alt="" loading="lazy">
-          <img src="assets/sunset4.jpg" alt="" loading="lazy">
-        </div>
-        <div class="exp-body">
-          <h3>Sunsets</h3>
-          <p>Los sábados y fines de semana largos. La experiencia del atardecer que explota en fiesta. Sold-outs, energía y el ritual.</p>
-          <a class="exp-link" href="#entradas">Ver fechas <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </div>
@@ -661,26 +669,28 @@
   ============================================================= */
   const EVENTOS = [
     // ---- SEPTIEMBRE ----
-    { titulo:"La Finquita Sunset", fecha:"2026-09-26", lugar:"La Finquita 1920", venti:"", cartel:"Apertura de Temporada" },
+    { titulo:"La Finquita Sunset", fecha:"2026-09-26", lugar:"La Finquita 1920", venti:"https://venti.live/evento/sunset-apertura-la-finquita-1920-26-09", cartel:"Apertura de Temporada" },
     // ---- OCTUBRE ----
-    { titulo:"La Finquita Sunset", fecha:"2026-10-03", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2026-10-10", lugar:"La Finquita 1920", venti:"", especial:true },
-    { titulo:"La Finquita Sunset", fecha:"2026-10-11", lugar:"La Finquita 1920", venti:"", especial:true },
-    { titulo:"La Finquita Sunset", fecha:"2026-10-17", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2026-10-24", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2026-10-31", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2026-10-03", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-03-10" },
+    { titulo:"La Finquita Sunset", fecha:"2026-10-10", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-edici-n-especial-10-10", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2026-10-11", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-edici-n-especial-11-10", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2026-10-17", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-17-10" },
+    { titulo:"La Finquita Sunset", fecha:"2026-10-24", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-24-10" },
+    { titulo:"La Finquita Sunset", fecha:"2026-10-31", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-31-10" },
     // ---- NOVIEMBRE ----
-    { titulo:"La Finquita Sunset", fecha:"2026-11-07", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2026-11-14", lugar:"La Finquita 1920", venti:"" },
-    // ⚠️ DE ACÁ PARA ABAJO SON FECHAS INVENTADAS (placeholder) — ajustá/borrá según el calendario real.
-    { titulo:"La Finquita Sunset", fecha:"2026-11-21", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2026-11-28", lugar:"La Finquita 1920", venti:"" },
+    { titulo:"La Finquita Sunset", fecha:"2026-11-07", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-07-11" },
+    { titulo:"La Finquita Sunset", fecha:"2026-11-14", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-14-11" },
+    { titulo:"La Finquita Sunset", fecha:"2026-11-21", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-edici-n-especial-21-11", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2026-11-22", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-edici-n-especial-22-11", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2026-11-28", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-28-11" },
     // ---- DICIEMBRE ----
-    { titulo:"La Finquita Sunset", fecha:"2026-12-05", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2026-12-12", lugar:"La Finquita 1920", venti:"" },
-    { titulo:"La Finquita Sunset", fecha:"2026-12-19", lugar:"La Finquita 1920", venti:"", especial:true },
-    { titulo:"La Finquita Sunset", fecha:"2026-12-20", lugar:"La Finquita 1920", venti:"", especial:true },
-    { titulo:"La Finquita Sunset", fecha:"2026-12-31", lugar:"La Finquita 1920", venti:"", cartel:"Fin de Año" },
+    { titulo:"La Finquita Sunset", fecha:"2026-12-05", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-edici-n-especial-05-12", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2026-12-06", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-edici-n-especial-06-12", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2026-12-07", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-edici-n-especial-07-12", especial:true },
+    { titulo:"La Finquita Sunset", fecha:"2026-12-11", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-fiesta-interempresas-11-12", interempresas:true },
+    { titulo:"La Finquita Sunset", fecha:"2026-12-12", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-12-12" },
+    { titulo:"La Finquita Sunset", fecha:"2026-12-19", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-19-12" },
+    { titulo:"La Finquita Sunset", fecha:"2026-12-26", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-26-12" },
     // Enero en adelante: bloque "Próximamente" bloqueado (sin fechas todavía).
     { proximamente:true, mes:"Enero", anio:2027 }
   ];
@@ -757,7 +767,7 @@
     const link = (ev.venti && ev.venti.trim()) ? ev.venti.trim() : VENTI_URL;
     const isNext = ev === nextEv;
 
-    const esp = ev.especial ? " especial" : "";
+    const esp = (ev.especial ? " especial" : "") + (ev.interempresas ? " interempresas" : "");
 
     const thumb = ev.flyer
       ? `<img src="${ev.flyer}" alt="Flyer ${ev.titulo}" loading="lazy">`
@@ -765,13 +775,14 @@
 
     const cartel    = ev.cartel ? `<span class="ev-cartel"><i class="ast ast-dark"></i>${ev.cartel}</span>` : "";
     const tagEsp    = ev.especial ? `<span class="ev-tag"><i class="ast"></i>Edición Especial</span>` : "";
+    const tagInt    = ev.interempresas ? `<span class="ev-tag int"><i class="ast"></i>Interempresas</span>` : "";
     const metaFecha = d ? `<span>${SVG_CAL}${dow} ${dd} ${mesC}</span>` : "";
     const metaHora  = ev.hora ? `<span>${SVG_CLK}${ev.hora} hs</span>` : "";
     const metaLugar = ev.lugar ? `<span>${SVG_PIN}${ev.lugar}</span>` : "";
     // el cartel llamativo reemplaza al badge "Próxima fecha" para no duplicar
     const badge = (isNext && !ev.cartel) ? `<span class="ev-badge"><i class="ast ast-dark"></i>Próxima fecha</span>` : "";
 
-    const tags = (cartel || tagEsp) ? `<div class="ev-tags">${cartel}${tagEsp}</div>` : "";
+    const tags = (cartel || tagEsp || tagInt) ? `<div class="ev-tags">${cartel}${tagEsp}${tagInt}</div>` : "";
     const inner = `
       <div class="ev-thumb">${thumb}</div>
       <div class="ev-info">
