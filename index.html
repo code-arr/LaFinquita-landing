@@ -834,7 +834,6 @@
     const cartel    = ev.cartel ? `<span class="ev-cartel"><i class="ast ast-dark"></i>${ev.cartel}</span>` : "";
     const tagEsp    = ev.especial ? `<span class="ev-tag"><i class="ast"></i>Edición Especial</span>` : "";
     const tagInt    = ev.interempresas ? `<span class="ev-tag int"><i class="ast"></i>Interempresas</span>` : "";
-    const tagNye    = ev.anionuevo ? `<span class="ev-tag nye"><i class="ast ast-dark"></i>Año Nuevo</span>` : "";
     const nyeDeco   = ev.anionuevo ? `<span class="nye-deco" aria-hidden="true"><i>✦</i><i>✦</i><i>✧</i><i>✦</i><i>✧</i></span>` : "";
     const metaFecha = d ? `<span>${SVG_CAL}${dow} ${dd} ${mesC}</span>` : "";
     const metaHora  = ev.hora ? `<span>${SVG_CLK}${ev.hora} hs</span>` : "";
@@ -842,7 +841,7 @@
     // el cartel llamativo reemplaza al badge "Próxima fecha" para no duplicar
     const badge = (isNext && !ev.cartel) ? `<span class="ev-badge"><i class="ast ast-dark"></i>Próxima fecha</span>` : "";
 
-    const tags = isPast ? "" : ((cartel || tagEsp || tagInt || tagNye) ? `<div class="ev-tags">${cartel}${tagEsp}${tagInt}${tagNye}</div>` : "");
+    const tags = isPast ? "" : ((cartel || tagEsp || tagInt) ? `<div class="ev-tags">${cartel}${tagEsp}${tagInt}</div>` : "");
     const inner = `
       <div class="ev-thumb">${thumb}</div>
       <div class="ev-info">
