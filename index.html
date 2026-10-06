@@ -32,6 +32,9 @@
     --bordo-line:rgba(150,40,40,.55);
     --morado:#4a2d7a;              /* Interempresas */
     --morado-line:rgba(130,90,200,.55);
+    --oro:#c9a84a;                 /* Año Nuevo (festivo) */
+    --oro-2:#f0d685;
+    --oro-line:rgba(201,168,74,.6);
     --shadow:0 30px 70px rgba(0,0,0,.6);
     --serif:"Playfair Display", Georgia, serif;
     --sans:"Jost", system-ui, sans-serif;
@@ -308,6 +311,46 @@
   .ev-row.interempresas .ev-pill{border-color:var(--morado-line);}
   .ev-row.interempresas:hover .ev-pill{background:var(--morado);color:#fff;border-color:var(--morado);}
   .ev-tag.int{background:var(--morado);}
+  /* ---- Fecha vivida (ya pasó) — tachada entera ---- */
+  .ev-row.past{background:var(--panel);border-style:dashed;border-color:var(--line);cursor:default;opacity:.65;}
+  .ev-row.past .ev-thumb{filter:grayscale(1);opacity:.5;}
+  .ev-row.past .ev-logo{background:#232323;}
+  .ev-row.past .ev-info h3{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1px;text-decoration-color:var(--line-strong);}
+  .ev-row.past .ev-meta{opacity:.6;}
+  .ev-stamp{justify-self:end;align-self:center;font-family:var(--serif);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);border:1.5px solid var(--line-strong);border-radius:5px;padding:.3rem .8rem;transform:rotate(-7deg);opacity:.8;white-space:nowrap;}
+  /* botón-texto para desplegar fechas pasadas */
+  .ev-past-toggle{display:block;margin:0 auto 1.1rem;background:none;border:none;cursor:pointer;
+    font-family:var(--sans);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+    transition:color .2s ease;}
+  .ev-past-toggle:hover{color:var(--white);}
+  /* ---- Año Nuevo (festivo, dorado) ---- */
+  .ev-row.anionuevo{border-color:var(--oro-line);background:
+    linear-gradient(120deg, rgba(201,168,74,.16), rgba(201,168,74,.04) 40%, rgba(201,168,74,.14));
+    overflow:hidden;box-shadow:0 0 0 1px rgba(201,168,74,.12), 0 12px 34px rgba(201,168,74,.08);}
+  .ev-row.anionuevo::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(110deg,transparent 30%,rgba(240,214,133,.22) 50%,transparent 70%);
+    background-size:220% 100%;animation:nyeShine 5.5s ease-in-out infinite;}
+  @keyframes nyeShine{0%{background-position:160% 0}60%,100%{background-position:-60% 0}}
+  .ev-row.anionuevo:hover{border-color:var(--oro);background:
+    linear-gradient(120deg, rgba(201,168,74,.26), rgba(201,168,74,.08) 40%, rgba(201,168,74,.22));}
+  .ev-row.anionuevo .ev-logo{background:linear-gradient(135deg,var(--oro),var(--oro-2));}
+  .ev-row.anionuevo .ev-pill{border-color:var(--oro-line);}
+  .ev-row.anionuevo:hover .ev-pill{background:linear-gradient(135deg,var(--oro),var(--oro-2));color:#1a1405;border-color:var(--oro);}
+  .ev-tag.nye{background:linear-gradient(135deg,var(--oro),var(--oro-2));color:#1a1405;}
+  .ev-row.anionuevo .ev-cartel{background:linear-gradient(135deg,var(--oro-2),var(--oro));color:#1a1405;box-shadow:0 4px 16px rgba(201,168,74,.35);}
+  /* destellos / confeti que titilan */
+  .nye-deco{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
+  .nye-deco i{position:absolute;color:var(--oro-2);font-style:normal;opacity:0;animation:nyeTwinkle 3.4s ease-in-out infinite;text-shadow:0 0 8px rgba(240,214,133,.7);}
+  .nye-deco i:nth-child(1){top:14%;left:7%;font-size:.7rem;animation-delay:0s;}
+  .nye-deco i:nth-child(2){top:62%;left:16%;font-size:.5rem;animation-delay:.7s;}
+  .nye-deco i:nth-child(3){top:24%;right:11%;font-size:.6rem;animation-delay:1.3s;}
+  .nye-deco i:nth-child(4){top:70%;right:7%;font-size:.8rem;animation-delay:.4s;}
+  .nye-deco i:nth-child(5){top:44%;right:30%;font-size:.5rem;animation-delay:1.9s;}
+  @keyframes nyeTwinkle{0%,100%{opacity:0;transform:scale(.6) rotate(0)}50%{opacity:.95;transform:scale(1) rotate(25deg)}}
+  @media (prefers-reduced-motion:reduce){
+    .ev-row.anionuevo::before,.nye-deco i{animation:none;}
+    .nye-deco i{opacity:.8;}
+  }
   .ev-tags{display:flex;flex-wrap:wrap;gap:.4rem;}
   .ev-tag{display:inline-flex;align-items:center;gap:.4rem;background:var(--bordo);color:#fff;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.18rem .5rem;border-radius:3px;}
   .ev-tag .ast{width:.85em;height:.85em;}
@@ -326,8 +369,10 @@
   .ev-pill .arrow{display:none;width:16px;height:16px;}
   .ev-badge{position:absolute;top:-9px;left:16px;display:inline-flex;align-items:center;gap:.4rem;background:var(--white);color:var(--black);font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.28rem .7rem;border-radius:999px;}
   .ev-badge svg{width:11px;height:11px;}
-  .ev-more{display:flex;justify-content:center;margin-top:2.4rem;position:relative;z-index:2;}
+  .ev-more{display:flex;justify-content:center;margin-top:3rem;margin-bottom:1rem;position:relative;z-index:2;}
   .ev-more button{cursor:pointer;background:none;}
+  .ev-soon{margin-top:2.6rem;}
+  .ev-soon:empty{margin-top:0;}
 
   /* ---------- Ubicación ---------- */
   .ubi-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center;}
@@ -498,6 +543,7 @@
     <!-- Las filas se generan solas desde la lista EVENTOS (ver <script> al final) -->
     <div class="ev-list" id="eventosList"></div>
     <div class="ev-more" id="eventosMore" hidden></div>
+    <div class="ev-soon" id="eventosSoon"></div>
     <p class="ev-empty" id="eventosEmpty" hidden>Pronto vamos a anunciar nuevas fechas. ¡Seguinos en Instagram!</p>
   </div>
 </section>
@@ -690,18 +736,25 @@
     { titulo:"La Finquita Sunset", fecha:"2026-12-12", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-12-12" },
     { titulo:"La Finquita Sunset", fecha:"2026-12-19", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-19-12" },
     { titulo:"La Finquita Sunset", fecha:"2026-12-26", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-26-12" },
-    // Enero en adelante: bloque "Próximamente" bloqueado (sin fechas todavía).
-    { proximamente:true, mes:"Enero", anio:2027 }
+    // ---- ENERO 2027 ----
+    { titulo:"Año Nuevo en La Finquita", fecha:"2027-01-01", lugar:"La Finquita 1920", venti:"https://venti.live/evento/a-o-nuevo-la-finquita-1920", cartel:"Fiesta de Año Nuevo", anionuevo:true },
+    { titulo:"La Finquita Sunset", fecha:"2027-01-09", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-09-01" },
+    { titulo:"La Finquita Sunset", fecha:"2027-01-16", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-16-01" },
+    { titulo:"La Finquita Sunset", fecha:"2027-01-23", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-23-01" },
+    { titulo:"La Finquita Sunset", fecha:"2027-01-30", lugar:"La Finquita 1920", venti:"https://venti.live/evento/la-finquita-sunset-30-01" },
+    // Febrero en adelante: se publican a medida que avanza la temporada.
+    { proximamente:true, mes:"Febrero", anio:2027 }
   ];
 
   // --- Render de la lista de eventos (filas compactas agrupadas por mes) ---
   const MES_CORTO = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"];
   const MES_LARGO = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
   const DOW = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
-  const INITIAL = 6; // cuántas fechas se muestran antes de "Ver más"
+  const INITIAL = 8; // cuántas PRÓXIMAS fechas se muestran antes de "Ver más"
 
   const listEl  = document.getElementById('eventosList');
   const moreEl  = document.getElementById('eventosMore');
+  const soonEl  = document.getElementById('eventosSoon');
   const emptyEl = document.getElementById('eventosEmpty');
 
   const SVG_CAL  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>`;
@@ -723,6 +776,11 @@
 
   // la próxima fecha (la primera que todavía no pasó) se destaca
   const nextEv  = dated.find(e => new Date(e.fecha + "T00:00:00") >= HOY) || null;
+
+  // Separamos fechas pasadas (vividas) de las que vienen. A medida que pasan
+  // los findes, cada fecha se mueve sola a "pasadas" y suben las próximas.
+  const pastEv     = dated.filter(e => new Date(e.fecha + "T00:00:00") <  HOY);
+  const upcomingEv = dated.filter(e => new Date(e.fecha + "T00:00:00") >= HOY);
 
   // --- Progreso de temporada (se calcula solo con la fecha de hoy del visitante) ---
   (function renderSeason(){
@@ -765,8 +823,9 @@
     const dow = d ? DOW[d.getDay()] : "";
     const link = (ev.venti && ev.venti.trim()) ? ev.venti.trim() : VENTI_URL;
     const isNext = ev === nextEv;
+    const isPast = d ? d < HOY : false;
 
-    const esp = (ev.especial ? " especial" : "") + (ev.interempresas ? " interempresas" : "");
+    const esp = isPast ? "" : ((ev.especial ? " especial" : "") + (ev.interempresas ? " interempresas" : "") + (ev.anionuevo ? " anionuevo" : ""));
 
     const thumb = ev.flyer
       ? `<img src="${ev.flyer}" alt="Flyer ${ev.titulo}" loading="lazy">`
@@ -775,13 +834,15 @@
     const cartel    = ev.cartel ? `<span class="ev-cartel"><i class="ast ast-dark"></i>${ev.cartel}</span>` : "";
     const tagEsp    = ev.especial ? `<span class="ev-tag"><i class="ast"></i>Edición Especial</span>` : "";
     const tagInt    = ev.interempresas ? `<span class="ev-tag int"><i class="ast"></i>Interempresas</span>` : "";
+    const tagNye    = ev.anionuevo ? `<span class="ev-tag nye"><i class="ast ast-dark"></i>Año Nuevo</span>` : "";
+    const nyeDeco   = ev.anionuevo ? `<span class="nye-deco" aria-hidden="true"><i>✦</i><i>✦</i><i>✧</i><i>✦</i><i>✧</i></span>` : "";
     const metaFecha = d ? `<span>${SVG_CAL}${dow} ${dd} ${mesC}</span>` : "";
     const metaHora  = ev.hora ? `<span>${SVG_CLK}${ev.hora} hs</span>` : "";
     const metaLugar = ev.lugar ? `<span>${SVG_PIN}${ev.lugar}</span>` : "";
     // el cartel llamativo reemplaza al badge "Próxima fecha" para no duplicar
     const badge = (isNext && !ev.cartel) ? `<span class="ev-badge"><i class="ast ast-dark"></i>Próxima fecha</span>` : "";
 
-    const tags = (cartel || tagEsp || tagInt) ? `<div class="ev-tags">${cartel}${tagEsp}${tagInt}</div>` : "";
+    const tags = isPast ? "" : ((cartel || tagEsp || tagInt || tagNye) ? `<div class="ev-tags">${cartel}${tagEsp}${tagInt}${tagNye}</div>` : "");
     const inner = `
       <div class="ev-thumb">${thumb}</div>
       <div class="ev-info">
@@ -790,18 +851,24 @@
         <div class="ev-meta">${metaFecha}${metaHora}${metaLugar}</div>
       </div>`;
 
+    // Fecha que ya pasó: no se compra, se muestra como "Vivido" (tachada, con sello)
+    if (isPast){
+      return `<div class="ev-row past">${inner}<span class="ev-stamp">Vivido</span></div>`;
+    }
     if (ev.agotado){
       return `<div class="ev-row${esp}">${inner}<span class="ev-pill soon">Agotado</span>${badge}</div>`;
     }
     const pill = `<span class="ev-pill"><span class="txt">Comprar entradas</span>${SVG_ARR}</span>`;
-    return `<a class="ev-row${isNext ? " next" : ""}${esp}" href="${link}" target="_blank" rel="noopener">${inner}${pill}${badge}</a>`;
+    return `<a class="ev-row${isNext ? " next" : ""}${esp}" href="${link}" target="_blank" rel="noopener">${nyeDeco}${inner}${pill}${badge}</a>`;
   }
 
-  function render(expanded){
-    const visible = expanded ? all : all.slice(0, INITIAL);
-    const groups = [];
-    const idx = {};
-    for (const ev of visible){
+  // Estado de la lista: expandir próximas / mostrar pasadas (vividas)
+  let expanded = false;
+  let showPast = false;
+
+  function buildGroups(list){
+    const groups = []; const idx = {};
+    for (const ev of list){
       let key, label, soon = false;
       if (ev.fecha){
         const d = new Date(ev.fecha + "T00:00:00");
@@ -811,36 +878,54 @@
       if (idx[key] === undefined){ idx[key] = groups.length; groups.push({ label, items:[], soon }); }
       groups[idx[key]].items.push(ev);
     }
-    const showHeads = groups.length > 1;
-    listEl.innerHTML = groups.map(g => {
-      const head = showHeads ? `<div class="ev-month-head"><h3><i class="ast"></i> ${g.label} <i class="ast"></i></h3></div>` : "";
-      const body = g.soon
-        ? `<div class="ev-locked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4.5" y="11" width="15" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><b>Próximamente</b><span>Las fechas de enero se anuncian pronto</span></div>`
-        : `<div class="ev-rows">${g.items.map(rowHTML).join("")}</div>`;
-      return `<div class="ev-month">${head}${body}</div>`;
-    }).join("");
+    return groups;
   }
 
-  function updateMore(expanded){
-    if (all.length <= INITIAL){ moreEl.hidden = true; return; }
+  function groupHTML(g, showHeads){
+    const head = showHeads ? `<div class="ev-month-head"><h3><i class="ast"></i> ${g.label} <i class="ast"></i></h3></div>` : "";
+    const body = g.soon
+      ? `<div class="ev-locked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4.5" y="11" width="15" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><b>Próximas fechas</b><span>Se publican a medida que avanza la temporada</span></div>`
+      : `<div class="ev-rows">${g.items.map(rowHTML).join("")}</div>`;
+    return `<div class="ev-month">${head}${body}</div>`;
+  }
+
+  function render(){
+    // por defecto mostramos sólo las próximas; las pasadas van detrás del toggle
+    const visibleUpcoming = expanded ? upcomingEv : upcomingEv.slice(0, INITIAL);
+    const datedList = [ ...(showPast ? pastEv : []), ...visibleUpcoming ];
+    const datedGroups = buildGroups(datedList);
+    // el bloque "Próximamente" (sin fecha) sólo se muestra al expandir, DESPUÉS del botón "Ver más"
+    const soonGroups = expanded ? buildGroups(undated) : [];
+    const showHeads = (datedGroups.length + soonGroups.length) > 1;
+    const pastToggle = pastEv.length
+      ? `<button class="ev-past-toggle" type="button" id="pastToggle">${showPast ? '▲ Ocultar fechas pasadas' : `▾ Ver fechas pasadas (${pastEv.length})`}</button>`
+      : "";
+    listEl.innerHTML = pastToggle + datedGroups.map(g => groupHTML(g, showHeads)).join("");
+    soonEl.innerHTML = soonGroups.map(g => groupHTML(g, showHeads)).join("");
+    const pt = document.getElementById('pastToggle');
+    if (pt) pt.addEventListener('click', () => { showPast = !showPast; render(); });
+  }
+
+  function updateMore(){
+    if (upcomingEv.length <= INITIAL){ moreEl.hidden = true; return; }
     moreEl.hidden = false;
-    const rest = Math.max(1, dated.length - INITIAL);
+    const rest = upcomingEv.length - INITIAL;
     moreEl.innerHTML = expanded
       ? `<button class="btn btn-ghost" type="button">Ver menos ↑</button>`
       : `<button class="btn btn-ghost" type="button">Ver ${rest} ${rest === 1 ? "fecha" : "fechas"} más ↓</button>`;
     moreEl.querySelector('button').addEventListener('click', () => {
-      const nowExpanded = !expanded;
-      render(nowExpanded);
-      updateMore(nowExpanded);
-      if (!nowExpanded) document.getElementById('entradas').scrollIntoView({ behavior:"smooth" });
+      expanded = !expanded;
+      render();
+      updateMore();
+      if (!expanded) document.getElementById('entradas').scrollIntoView({ behavior:"smooth" });
     });
   }
 
   if (!all.length){
     emptyEl.hidden = false;
   } else {
-    render(false);
-    updateMore(false);
+    render();
+    updateMore();
   }
 
   // 2) Header con fondo al hacer scroll
