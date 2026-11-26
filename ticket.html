@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Your ticket — La Finquita 1920</title>
+<link rel="icon" type="image/jpeg" href="assets/logo.jpg" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Jost:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--black:#0a0a0a;--panel:#141414;--white:#f4f2ee;--muted:#9b968d;--line:rgba(244,242,238,.14);
+    --serif:"Playfair Display",Georgia,serif;--sans:"Jost",system-ui,sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{min-height:100svh;display:grid;place-items:center;padding:2rem 1rem;background:var(--black);color:var(--white);font-family:var(--sans);line-height:1.6;}
+  .card{width:min(420px,100%);background:var(--panel);border:1px solid var(--line);padding:2rem 1.6rem;text-align:center;}
+  .logo{width:170px;margin:0 auto 1.4rem;display:block;}
+  h1{font-family:var(--serif);font-weight:600;font-size:1.7rem;line-height:1.2;margin-bottom:.4rem;}
+  .muted{color:var(--muted);font-size:.95rem;}
+  .qr{background:#fff;padding:14px;margin:1.6rem auto;width:min(280px,100%);}
+  .qr svg{width:100%;height:auto;display:block;}
+  .info{display:grid;gap:.35rem;border-top:1px solid var(--line);padding-top:1.2rem;margin-top:1.2rem;font-size:.95rem;}
+  .info b{font-weight:600;}
+  .code{font-size:.75rem;letter-spacing:.12em;color:var(--muted);}
+  .btn{display:inline-block;margin-top:1.4rem;padding:.9em 1.8em;border:1px solid var(--line);color:var(--white);text-decoration:none;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;}
+  .btn.wpp{display:inline-flex;align-items:center;gap:.6em;border-color:#25d366;color:#25d366;}
+  .btn.wpp svg{width:1.2em;height:1.2em;fill:currentColor;}
+  .spinner{width:34px;height:34px;margin:1.6rem auto;border:3px solid var(--line);border-top-color:var(--white);border-radius:50%;animation:spin 1s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media print{body{background:#fff;color:#000}.card{border:none}.btn,.logo{display:none}.muted,.code{color:#333}}
+</style>
+</head>
+<body>
+<main class="card" id="card">
+  <img class="logo" src="assets/logo-completo-white.png" alt="La Finquita 1920" />
+  <div id="content"><div class="spinner"></div><p class="muted">Loading your ticket…</p></div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+  const el = document.getElementById('content');
+  const params = new URLSearchParams(location.search);
+  const id = params.get('order') || '';
+  const cancel = params.get('cancel') === '1' ? '&cancel=1' : '';
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+  const fecha = f => new Date(f + "T12:00:00").toLocaleDateString('en-US', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  let intentos = 0;
+
+  function mostrar(o){
+    if (o.estado === 'PAGADA'){
+      const wpp = 'https://wa.me/5492613037617?text=' + encodeURIComponent(`Hi! I just bought tickets for La Finquita 1920 (order ${o.id}). I'm waiting for my tickets 🙂`);
+      el.innerHTML = `
+        <h1>Payment confirmed 🎉</h1>
+        <p class="muted">${esc(o.titulo)} · ${fecha(o.fecha)} · from 6 PM</p>
+        <p style="margin:1.4rem 0 .4rem">Thank you, ${esc(o.nombre)}! We received your payment.</p>
+        <p class="muted"><b>We'll send your tickets shortly to your email</b> (${esc(o.email || 'the email you used to buy')}). You'll get them soon — no need to do anything else.</p>
+        <div class="info">
+          <span><b>${esc(o.nombre)}</b></span>
+          <span>${o.cantidad} ${o.cantidad === 1 ? 'ticket' : 'tickets'} · ${esc(o.moneda)} ${o.monto}</span>
+          <span class="code">ORDER ${esc(o.id)}</span>
+        </div>
+        <p class="muted" style="margin-top:1.2rem;font-size:.9rem">Any questions? Message us on WhatsApp:</p>
+        <a class="btn wpp" href="${wpp}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.3.6 4.4 1.7 6.3L3 29l7.4-2c1.8 1 3.9 1.5 6 1.5 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.8c-1.9 0-3.7-.5-5.3-1.5l-.4-.2-4.4 1.2 1.2-4.3-.3-.4a10 10 0 01-1.6-5.4C5.2 9.6 10 5 16 5s10.8 4.6 10.8 10.5S22 25.8 16 25.8zm5.9-7.8c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-1.9-.9-3.1-1.7-4.4-3.8-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.6l-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-1.3 1.3-1 3.1.2 4.9 2 2.9 3.4 3.8 6 4.9 2 .8 2.4.7 2.9.6.7-.1 1.9-.8 2.1-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4z"/></svg>
+          +54 9 2613037617
+        </a>`;
+    } else if (o.estado === 'PENDIENTE' && intentos++ < 30){
+      el.innerHTML = `<h1>Confirming your payment…</h1><div class="spinner"></div>
+        <p class="muted">This usually takes a few seconds. Don't close this page.</p>`;
+      setTimeout(cargar, 4000);
+    } else if (o.estado === 'PENDIENTE'){
+      el.innerHTML = `<h1>Payment still processing</h1>
+        <p class="muted">We'll email your ticket as soon as the payment is confirmed. You can also reload this page later.</p>
+        <a class="btn" href="javascript:location.reload()">Reload</a>`;
+    } else {
+      el.innerHTML = `<h1>Payment not completed</h1>
+        <p class="muted">Your payment was not approved or the time to pay expired. No charge was made.</p>
+        <a class="btn" href="/#international">Try again</a>`;
+    }
+  }
+
+  function cargar(){
+    fetch('/api/order?id=' + encodeURIComponent(id) + cancel)
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(mostrar)
+      .catch(() => {
+        el.innerHTML = `<h1>Ticket not found</h1><p class="muted">Check the link in your email or message us on
+          <a href="https://wa.me/5492613037617" style="color:inherit">WhatsApp</a>.</p>`;
+      });
+  }
+  cargar();
+</script>
+</body>
+</html>

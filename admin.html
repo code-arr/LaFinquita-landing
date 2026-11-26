@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Ventas extranjeros — La Finquita 1920</title>
+<link rel="icon" type="image/jpeg" href="assets/logo.jpg" />
+<style>
+  :root{--black:#0a0a0a;--panel:#141414;--white:#f4f2ee;--muted:#9b968d;--line:rgba(244,242,238,.14);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--black);color:var(--white);font-family:system-ui,sans-serif;padding:1.2rem 1rem 3rem;}
+  .wrap{max-width:980px;margin:0 auto;display:grid;gap:1.2rem;}
+  h1{font-size:1.3rem;}
+  .muted{color:var(--muted);font-size:.88rem;}
+  input,button{font:inherit;padding:.75rem 1rem;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--white);}
+  button{background:var(--white);color:var(--black);font-weight:600;cursor:pointer;border:none;}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.8rem;}
+  .kpi{background:var(--panel);border:1px solid var(--line);padding:1rem;}
+  .kpi b{display:block;font-size:1.6rem;}
+  details{background:var(--panel);border:1px solid var(--line);}
+  summary{cursor:pointer;padding:.9rem 1rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+  summary span:last-child{color:var(--muted);}
+  .tabla{overflow-x:auto;border-top:1px solid var(--line);}
+  table{width:100%;border-collapse:collapse;font-size:.88rem;}
+  th,td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--line);white-space:nowrap;}
+  th{color:var(--muted);font-weight:500;}
+  .si{color:#7bd88f;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Ventas · Entradas para extranjeros</h1>
+  <form id="pinForm" style="display:flex;gap:.6rem;flex-wrap:wrap">
+    <input type="password" id="pin" placeholder="PIN de administración" autocomplete="off" required>
+    <button type="submit">Ver ventas</button>
+    <span class="muted" id="msg" style="align-self:center"></span>
+  </form>
+  <div id="out"></div>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+  const usd = n => 'USD ' + (Math.round(n * 100) / 100).toLocaleString('es-AR');
+  const hora = s => s ? new Date(s).toLocaleString('es-AR', { dateStyle:'short', timeStyle:'short' }) : '';
+
+  async function cargar(pin){
+    const r = await fetch('/api/admin', { headers:{ 'x-pin': pin } });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok){ $('msg').textContent = d.error || 'Error'; return; }
+    try { sessionStorage.setItem('adminPin', pin); } catch {}
+    $('msg').textContent = '';
+
+    const vendidas = d.fechas.reduce((n, f) => n + f.vendidas, 0);
+    const total = d.fechas.reduce((n, f) => n + f.total, 0);
+    // Comisión real que cobró PayPal y neto que entró (valores que PayPal informó en cada pago).
+    // Si por algún pago no vino el detalle, estimamos neto = bruto − comisión conocida.
+    const feeDe  = o => Number(o.cobrado?.comision || 0);
+    const netoDe = o => o.cobrado?.monto != null ? Number(o.cobrado.monto) : (o.monto - feeDe(o));
+    const todas  = d.fechas.flatMap(f => f.ordenes);
+    const comisionPaypal = todas.reduce((n, o) => n + feeDe(o), 0);
+    const neto = todas.reduce((n, o) => n + netoDe(o), 0);
+    const kpis = `<div class="kpis">
+      <div class="kpi"><span class="muted">Entradas vendidas</span><b>${vendidas}</b></div>
+      <div class="kpi"><span class="muted">Total vendido (bruto)</span><b>${usd(total)}</b></div>
+      <div class="kpi"><span class="muted">Comisión PayPal</span><b>${usd(comisionPaypal)}</b></div>
+      <div class="kpi"><span class="muted">Neto recibido</span><b>${usd(neto)}</b></div>
+      ${d.comisionPct ? `<div class="kpi"><span class="muted">Comisión desarrollo (${d.comisionPct}%)</span><b>${usd(total * d.comisionPct / 100)}</b></div>` : ''}
+    </div>`;
+
+    const fechas = d.fechas.filter(f => f.vendidas || f.pendientes || f.abierto).map(f => {
+      const feeF  = f.ordenes.reduce((n, o) => n + feeDe(o), 0);
+      const netoF = f.ordenes.reduce((n, o) => n + netoDe(o), 0);
+      return `
+      <details ${f.vendidas ? 'open' : ''}>
+        <summary><span><b>${esc(f.fecha)}</b> · ${esc(f.titulo)}</span>
+          <span>${f.vendidas}/${f.cupo} vendidas · bruto ${usd(f.total)}${feeF ? ` · PayPal ${usd(feeF)} · neto ${usd(netoF)}` : ''}${f.pendientes ? ` · ${f.pendientes} pago(s) en curso` : ''}</span></summary>
+        ${f.ordenes.length ? `<div class="tabla"><table>
+          <tr><th>Nombre</th><th>Cant.</th><th>Documento</th><th>País</th><th>Email</th><th>Pagó</th><th>Comisión PayPal</th><th>Neto</th><th>Medio</th><th>Fecha pago</th><th>Ingresó</th></tr>
+          ${f.ordenes.map(o => `<tr><td>${esc(o.nombre)}</td><td>${o.cantidad}</td><td>${esc(o.documento)}</td><td>${esc(o.pais)}</td>
+            <td>${esc(o.email)}</td><td>${usd(o.monto)}</td><td>${usd(feeDe(o))}</td><td>${usd(netoDe(o))}</td><td>${o.metodo === 'paypal' ? 'PayPal' : 'dLocal Go'}</td><td>${hora(o.pagada)}</td><td class="si">${o.ingreso ? '✓ ' + hora(o.ingreso) : ''}</td></tr>`).join('')}
+        </table></div>` : ''}
+      </details>`;
+    }).join('');
+
+    $('out').innerHTML = kpis + `<div class="wrap" style="margin-top:1.2rem">${fechas}</div>`;
+  }
+
+  $('pinForm').addEventListener('submit', e => { e.preventDefault(); cargar($('pin').value.trim()); });
+  try { const p = sessionStorage.getItem('adminPin'); if (p) cargar(p); } catch {}
+</script>
+</body>
+</html>
