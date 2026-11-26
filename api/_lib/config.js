@@ -7,7 +7,7 @@
 ============================================================= */
 
 export const MONEDA = "USD";          // dLocal Go lo convierte a ARS en el checkout
-export const PRECIO_DEFAULT = 30;     // USD por entrada (incluye +5% para cubrir la comisión de PayPal)
+export const PRECIO_DEFAULT = 25;     // USD · Sunset normal (incluye margen por comisión de PayPal)
 export const CUPO_DEFAULT = 30;       // entradas reservadas para extranjeros por fecha
 export const MAX_POR_COMPRA = 6;
 export const ZONA_HORARIA = "America/Argentina/Mendoza";
@@ -43,12 +43,12 @@ export const FECHAS = {
   "2026-10-31": {},
   "2026-11-07": {},
   "2026-11-14": {},
-  "2026-11-21": {},
-  "2026-11-22": {},
+  "2026-11-21": { precio: 35 }, // Edición Especial
+  "2026-11-22": { precio: 35 }, // Edición Especial
   "2026-11-28": {},
-  "2026-12-05": {},
-  "2026-12-06": {},
-  "2026-12-07": {},
+  "2026-12-05": { precio: 35 }, // Edición Especial
+  "2026-12-06": { precio: 35 }, // Edición Especial
+  "2026-12-07": { precio: 35 }, // Edición Especial
   "2026-12-11": {},
   "2026-12-12": {},
   "2026-12-19": {},
