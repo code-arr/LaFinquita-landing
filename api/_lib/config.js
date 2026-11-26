@@ -50,7 +50,6 @@ export const FECHAS = {
   "2026-12-05": { precio: 35 }, // Edición Especial
   "2026-12-06": { precio: 35 }, // Edición Especial
   "2026-12-07": { precio: 35 }, // Edición Especial
-  "2026-12-11": {},
   "2026-12-12": {},
   "2026-12-19": {},
   "2026-12-26": {},
@@ -59,6 +58,23 @@ export const FECHAS = {
   "2027-01-16": {},
   "2027-01-23": {},
   "2027-01-30": {},
+  "2027-02-06": { precio: 35 }, // Edición Especial
+  "2027-02-07": { precio: 35 }, // Edición Especial
+  "2027-02-08": { precio: 35 }, // Edición Especial
+  "2027-02-13": {},
+  "2027-02-20": {},
+  "2027-02-27": {},
+  "2027-03-06": {},
+  "2027-03-13": {},
+  "2027-03-20": {},
+  "2027-03-25": { precio: 35 }, // Edición Especial
+  "2027-03-26": {},
+  "2027-04-02": { precio: 35 }, // Edición Especial
+  "2027-04-03": {},
+  "2027-04-10": {},
+  "2027-04-17": {},
+  "2027-04-24": {},
+  "2027-05-01": { precio: 35 }, // Edición Especial
 };
 
 // Hoy en Mendoza como "YYYY-MM-DD" (se vende hasta el mismo día del evento)
