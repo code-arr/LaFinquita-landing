@@ -53,7 +53,7 @@ export const FECHAS = {
   "2026-12-12": {},
   "2026-12-19": {},
   "2026-12-26": {},
-  "2027-01-01": { titulo: "New Year's Eve at La Finquita", precio: 50, comida: false }, // la cena se consulta por WhatsApp
+  "2027-01-01": { titulo: "New Year's Eve at La Finquita", precio: 50, comidaExtra: 30, labelBase: "New Year's Eve", comidaNombre: "dinner" }, // fiesta 50 · fiesta + cena 80
   "2027-01-09": {},
   "2027-01-16": {},
   "2027-01-23": {},
@@ -90,7 +90,10 @@ export function evento(fecha) {
     titulo: cfg.titulo || "La Finquita Sunset",
     precio: cfg.precio ?? PRECIO_DEFAULT,
     cupo: cfg.cupo ?? CUPO_DEFAULT,
-    comida: cfg.comida !== false, // true salvo que la fecha lo desactive (ej: Año Nuevo)
+    comida: cfg.comida !== false,               // true salvo que la fecha lo desactive
+    comidaExtra: cfg.comidaExtra ?? COMIDA_EXTRA, // cuánto suma la opción con comida (Año Nuevo: 30)
+    labelBase: cfg.labelBase || "Sunset",        // nombre de la entrada base
+    comidaNombre: cfg.comidaNombre || "food (focaccia)", // qué incluye la opción con comida
     abierto: fecha >= hoy(),
   };
 }

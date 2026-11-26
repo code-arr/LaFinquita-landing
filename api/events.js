@@ -8,7 +8,9 @@ export async function GET() {
   try {
     const abiertos = eventos().filter((e) => e.abierto);
     const lista = await Promise.all(abiertos.map(async (e) => ({
-      fecha: e.fecha, titulo: e.titulo, precio: e.precio, comida: e.comida, disponibles: await disponibles(e),
+      fecha: e.fecha, titulo: e.titulo, precio: e.precio,
+      comida: e.comida, comidaExtra: e.comidaExtra, labelBase: e.labelBase, comidaNombre: e.comidaNombre,
+      disponibles: await disponibles(e),
     })));
     // Si PayPal todavía no está configurado, sólo se ofrecen los países de dLocal Go
     const paises = Object.entries(PAISES)

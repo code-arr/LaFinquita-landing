@@ -37,7 +37,7 @@ export async function crearOrden(datos, origen) {
   const cantidad = Number(datos.cantidad);
   // Opción "Sunset + comida": sólo si la fecha la ofrece (Año Nuevo no)
   const comida = Boolean(datos.comida) && ev.comida;
-  const precioUnit = ev.precio + (comida ? COMIDA_EXTRA : 0);
+  const precioUnit = ev.precio + (comida ? ev.comidaExtra : 0);
   const nombre = String(datos.nombre || "").trim().slice(0, 100);
   const email = String(datos.email || "").trim().toLowerCase().slice(0, 100);
   const documento = String(datos.documento || "").trim().slice(0, 30);
@@ -64,7 +64,7 @@ export async function crearOrden(datos, origen) {
   const orden = {
     id, fecha: ev.fecha, titulo: ev.titulo, cantidad, nombre, email, documento,
     pais: pais.nombre, paisCodigo, metodo: pais.metodo,
-    comida, opcion: comida ? "Sunset + comida" : "Sunset",
+    comida, opcion: comida ? `${ev.labelBase} + ${ev.comidaNombre}` : ev.labelBase,
     monto: precioUnit * cantidad, moneda: MONEDA,
     estado: "PENDIENTE", creada: new Date().toISOString(),
   };

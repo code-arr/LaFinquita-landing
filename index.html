@@ -1219,14 +1219,14 @@
     function update(){
       if (!data) return;
       const ev = data.eventos.find(e => e.fecha === selF.value);
-      const extra = data.comidaExtra || 0;
-      // Opción con/sin comida (Año Nuevo no tiene: la cena se consulta por WhatsApp)
+      const extra = ev ? (ev.comidaExtra || 0) : 0;
+      // Opción con/sin comida (cada fecha define su precio y etiqueta)
       if (ev && ev.comida){
         opcWrap.hidden = false; cenaEl.hidden = true;
         const want = selO.value;
         selO.innerHTML =
-          `<option value="">Sunset · ${money(ev.precio)}</option>` +
-          `<option value="1">Sunset + food (focaccia) · ${money(ev.precio + extra)}</option>`;
+          `<option value="">${ev.labelBase} · ${money(ev.precio)}</option>` +
+          `<option value="1">${ev.labelBase} + ${ev.comidaNombre} · ${money(ev.precio + extra)}</option>`;
         selO.value = want === "1" ? "1" : "";
       } else if (ev){
         opcWrap.hidden = true; selO.innerHTML = `<option value=""></option>`; selO.value = "";
