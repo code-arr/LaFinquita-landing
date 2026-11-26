@@ -1,0 +1,4 @@
+dev-server.mjs
+.env*
+.data/
+.claude/

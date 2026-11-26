@@ -88,6 +88,14 @@
   }
   .btn-primary{background:var(--white);color:var(--black);}
   .btn-primary:hover{transform:translateY(-3px);background:#fff;}
+  /* Botón oficial de PayPal (dorado/naranja de marca + logo) */
+  .btn-paypal{background:#ffc439;color:#003087;border-color:#ffc439;gap:.55em;}
+  .btn-paypal:hover{background:#f2b728;border-color:#f2b728;transform:translateY(-3px);}
+  .btn-paypal .pp-ico{width:1.15em;height:1.15em;flex:none;}
+  .btn-paypal .pp-logo{display:inline-flex;text-transform:none;letter-spacing:normal;
+    font-family:Arial,Helvetica,sans-serif;font-weight:800;font-style:italic;font-size:1.08em;line-height:1;}
+  .btn-paypal .pp-logo .pp1{color:#003087;}
+  .btn-paypal .pp-logo .pp2{color:#009cde;}
   .btn-ghost{border-color:var(--line-strong);color:var(--white);}
   .btn-ghost:hover{border-color:var(--white);transform:translateY(-3px);background:rgba(244,242,238,.06);}
 
@@ -374,6 +382,39 @@
   .ev-soon{margin-top:2.6rem;}
   .ev-soon:empty{margin-top:0;}
 
+  /* ---------- Entradas para extranjeros (dLocal Go) ---------- */
+  .intl-cta{position:relative;z-index:2;text-align:center;margin-top:2.4rem;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .intl-cta a{border-bottom:1px solid var(--line-strong);padding-bottom:.2rem;transition:color .2s ease,border-color .2s ease;}
+  .intl-cta a:hover{color:var(--white);border-color:var(--white);}
+  .intl-cta b{color:var(--white);font-weight:600;}
+  .intl-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,5vw,4rem);align-items:center;}
+  .intl-copy h2{font-size:clamp(2rem,4.6vw,3rem);margin:.5rem 0 1rem;}
+  .intl-copy p{color:var(--muted);font-size:1.05rem;}
+  .intl-list{list-style:none;margin:1.6rem 0;display:grid;gap:.8rem;}
+  .intl-list li{display:flex;gap:.75rem;align-items:flex-start;font-size:.98rem;}
+  .intl-list .ast{width:.8em;height:.8em;margin-top:.5em;flex:none;}
+  .intl-copy .intl-es{font-size:.9rem;border-top:1px solid var(--line);padding-top:1rem;}
+  .intl-panel{background:var(--panel);border:1px solid var(--line-strong);padding:clamp(1.6rem,4vw,2.4rem);box-shadow:var(--shadow);}
+  .intl-form{display:grid;gap:1rem;}
+  .intl-form label{display:grid;gap:.4rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+  .intl-form .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .intl-form input,.intl-form select{width:100%;background:var(--black);border:1px solid var(--line-strong);color:var(--white);padding:.75rem .85rem;font-family:var(--sans);font-size:.95rem;letter-spacing:normal;text-transform:none;border-radius:2px;}
+  .intl-form input:focus,.intl-form select:focus{outline:none;border-color:var(--white);}
+  .intl-form select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239b968d' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .7rem center;background-size:16px;padding-right:2rem;}
+  .intl-form option{background:var(--black);color:var(--white);}
+  .intl-total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:1rem;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+  .intl-total b{font-family:var(--serif);font-size:1.7rem;letter-spacing:.02em;text-transform:none;color:var(--white);}
+  .intl-msg{font-size:.9rem;color:#e7a1a1;}
+  .intl-msg:empty{display:none;}
+  .intl-cena{font-size:.8rem;color:var(--muted);text-transform:none;letter-spacing:normal;margin-top:-.4rem;}
+  .intl-cena a{color:#25d366;font-weight:600;}
+  .intl-form [hidden]{display:none !important;} /* el hidden tiene que ganarle al display:grid del label */
+  .intl-form .btn[disabled]{opacity:.55;cursor:wait;transform:none;}
+  .intl-note{display:flex;align-items:center;justify-content:center;gap:.4rem;font-size:.76rem;color:var(--muted);}
+  .intl-note svg{width:14px;height:14px;}
+  @media(max-width:860px){ .intl-grid{grid-template-columns:1fr;} }
+  @media(max-width:480px){ .intl-form .form-row{grid-template-columns:1fr;} }
+
   /* ---------- Ubicación ---------- */
   .ubi-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center;}
   .ubi-info h2{font-size:clamp(2rem,4.6vw,3rem);margin:.5rem 0 1.4rem;}
@@ -440,6 +481,7 @@
       <a class="link" href="#eventos">Eventos</a>
       <a class="link" href="#galeria">Galería</a>
       <a class="link" href="#ubicacion">Ubicación</a>
+      <a class="link" href="#international">International</a>
       <a class="btn btn-primary" href="#entradas">Entradas</a>
     </nav>
     <button class="menu-toggle" id="menuToggle" aria-label="Menú">
@@ -545,6 +587,57 @@
     <div class="ev-more" id="eventosMore" hidden></div>
     <div class="ev-soon" id="eventosSoon"></div>
     <p class="ev-empty" id="eventosEmpty" hidden>Pronto vamos a anunciar nuevas fechas. ¡Seguinos en Instagram!</p>
+    <p class="intl-cta" lang="en"><a href="#international">Visiting from abroad? <b>Buy with an international card →</b></a></p>
+  </div>
+</section>
+
+<!-- ================= ENTRADAS PARA EXTRANJEROS (dLocal Go) ================= -->
+<!-- Fechas, precio y cupo: api/_lib/config.js -->
+<section class="intl" id="international" lang="en">
+  <div class="wrap intl-grid">
+    <div class="intl-copy reveal">
+      <p class="eyebrow"><i class="ast" style="font-size:.85em;margin-right:.45em;"></i>International visitors</p>
+      <h2>Tickets for foreigners</h2>
+      <p>Visiting Mendoza? Get your ticket for La Finquita Sunset here, paying with your international credit or debit card.</p>
+      <ul class="intl-list">
+        <li><i class="ast"></i>Pay securely with PayPal — with your PayPal account or any international credit or debit card, from anywhere in the world.</li>
+        <li><i class="ast"></i>Your tickets arrive by email shortly after paying.</li>
+        <li><i class="ast"></i>Show your ticket and passport at the entrance.</li>
+      </ul>
+      <p class="intl-es" lang="es">¿Vivís en Argentina? Comprá tus entradas por Venti en la sección de fechas.</p>
+    </div>
+    <div class="intl-panel reveal">
+      <form class="intl-form" id="intlForm" novalidate>
+        <label>Date
+          <select name="fecha" id="intlFecha" required><option value="">Loading dates…</option></select>
+        </label>
+        <label id="intlOpcionWrap">Ticket
+          <select name="comida" id="intlOpcion"></select>
+        </label>
+        <p class="intl-cena" id="intlCena" hidden></p>
+        <div class="form-row">
+          <label>Tickets
+            <select name="cantidad" id="intlCant"><option>1</option></select>
+          </label>
+          <label>Country
+            <select name="pais" id="intlPais" required><option value="">Select…</option></select>
+          </label>
+        </div>
+        <label>Full name
+          <input type="text" name="nombre" required minlength="3" placeholder="As it appears on your passport" autocomplete="name">
+        </label>
+        <label>Email
+          <input type="email" name="email" required placeholder="Your ticket will be sent here" autocomplete="email">
+        </label>
+        <label>Passport / ID number
+          <input type="text" name="documento" required minlength="4">
+        </label>
+        <div class="intl-total"><span>Total</span><b id="intlTotal">—</b></div>
+        <p class="intl-msg" id="intlMsg" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-paypal form-submit" id="intlBtn"></button>
+        <p class="intl-note" id="intlNote"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4.5" y="11" width="15" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Secure payment</span></p>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -591,6 +684,8 @@
         <a href="#galeria">Galería</a>
         <a href="#ubicacion">Ubicación</a>
         <a href="#entradas">Entradas</a>
+        <a href="#international">International tickets</a>
+        <a href="terms.html">Terms &amp; refunds</a>
       </div>
       <div class="foot-col">
         <h4>Contacto</h4>
@@ -1077,6 +1172,105 @@
     window.open('https://wa.me/' + WPP + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
     formClose();
   });
+
+  // --- Entradas para extranjeros: fechas desde /api/events → checkout de dLocal Go ---
+  (function intlTickets(){
+    const form = document.getElementById('intlForm');
+    if (!form) return;
+    const selF = document.getElementById('intlFecha');
+    const selC = document.getElementById('intlCant');
+    const selP = document.getElementById('intlPais');
+    const noteEl = document.querySelector('#intlNote span');
+    const totalEl = document.getElementById('intlTotal');
+    const msg = document.getElementById('intlMsg');
+    const btn = document.getElementById('intlBtn');
+    const selO = document.getElementById('intlOpcion');
+    const opcWrap = document.getElementById('intlOpcionWrap');
+    const cenaEl = document.getElementById('intlCena');
+    // Logo PayPal (símbolo + wordmark) para el botón
+    const PP_LOGO = `<svg class="pp-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="#003087" d="M8.9 21.3H5.6c-.33 0-.58-.29-.53-.61L7.9 3.4c.06-.38.39-.66.78-.66h5.5c2.86 0 4.78 1.64 4.33 4.53-.5 3.25-3.05 4.87-6.22 4.87H9.9c-.4 0-.73.28-.79.67l-.21 1.33z"/><path fill="#009cde" d="M19.4 7.6c.6.9.74 2.08.5 3.47-.72 3.66-3.2 5.06-6.6 5.06h-.6c-.4 0-.73.28-.79.67l-.78 4.96c-.04.26-.26.45-.52.45H7.5c-.28 0-.5-.25-.45-.53l.2-1.27.84-5.33c.06-.39.39-.67.79-.67h1.78c3.17 0 5.72-1.62 6.22-4.87.2-1.3.03-2.26-.48-2.94.4.26.76.6 1 .99z"/></svg>`;
+    const PP_BTN = `${PP_LOGO}<span class="pp-logo"><span class="pp1">Pay</span><span class="pp2">Pal</span></span>`;
+    const MES_EN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const DOW_EN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    let data = null;
+
+    const fmtFecha = f => { const d = new Date(f + "T00:00:00"); return `${DOW_EN[d.getDay()]} ${MES_EN[d.getMonth()]} ${d.getDate()}`; };
+    const money = n => `${data.moneda} ${n.toLocaleString('en-US')}`;
+    const cerrar = texto => { selF.innerHTML = `<option value="">${texto}</option>`; btn.disabled = true; };
+
+    function update(){
+      if (!data) return;
+      const ev = data.eventos.find(e => e.fecha === selF.value);
+      const extra = data.comidaExtra || 0;
+      // Opción con/sin comida (Año Nuevo no tiene: la cena se consulta por WhatsApp)
+      if (ev && ev.comida){
+        opcWrap.hidden = false; cenaEl.hidden = true;
+        const want = selO.value;
+        selO.innerHTML =
+          `<option value="">Sunset · ${money(ev.precio)}</option>` +
+          `<option value="1">Sunset + food (focaccia) · ${money(ev.precio + extra)}</option>`;
+        selO.value = want === "1" ? "1" : "";
+      } else if (ev){
+        opcWrap.hidden = true; selO.innerHTML = `<option value=""></option>`; selO.value = "";
+        const wpp = 'https://wa.me/5492613037617?text=' + encodeURIComponent("Hi! I'd like New Year's Eve at La Finquita with dinner included. Could you tell me more?");
+        cenaEl.innerHTML = `Want dinner included for New Year's Eve? <a href="${wpp}" target="_blank" rel="noopener">Ask us on WhatsApp →</a>`;
+        cenaEl.hidden = false;
+      } else {
+        opcWrap.hidden = true; selO.innerHTML = `<option value=""></option>`; selO.value = ""; cenaEl.hidden = true;
+      }
+      const max = ev ? Math.max(1, Math.min(data.max, ev.disponibles)) : data.max;
+      const prev = Number(selC.value) || 1;
+      selC.innerHTML = Array.from({ length:max }, (_, i) => `<option>${i + 1}</option>`).join("");
+      selC.value = String(Math.min(prev, max));
+      const unit = ev ? ev.precio + (selO.value === "1" ? extra : 0) : 0;
+      totalEl.textContent = ev ? money(unit * Number(selC.value)) : "—";
+      // Cobramos todo por PayPal (desde cualquier país)
+      btn.innerHTML = PP_BTN;
+      noteEl.textContent = "Secure payment processed by PayPal";
+    }
+
+    fetch('/api/events')
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(d => {
+        data = d;
+        if (!d.eventos.length) return cerrar("No dates available");
+        selF.innerHTML = `<option value="">Choose a date…</option>` + d.eventos.map(e =>
+          `<option value="${e.fecha}"${e.disponibles ? "" : " disabled"}>${fmtFecha(e.fecha)} · ${e.titulo} · ${e.disponibles ? money(e.precio) : "Sold out"}</option>`
+        ).join("");
+        selP.innerHTML = `<option value="">Select…</option>` +
+          d.paises.map(p => `<option value="${p.codigo}">${p.nombre}</option>`).join("");
+        update();
+      })
+      .catch(() => {
+        cerrar("Online sales unavailable");
+        msg.textContent = "Online sales are not available right now. Message us on WhatsApp and we'll help you.";
+      });
+
+    selF.addEventListener('change', update);
+    selC.addEventListener('change', update);
+    selP.addEventListener('change', update);
+    selO.addEventListener('change', update);
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      msg.textContent = "";
+      if (!selF.value){ msg.textContent = "Please choose a date."; return; }
+      if (!form.checkValidity()){ form.reportValidity(); return; }
+      btn.disabled = true; btn.textContent = "Redirecting to payment…";
+      try {
+        const r = await fetch('/api/checkout', {
+          method:'POST', headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form)))
+        });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.error);
+        location.href = j.redirect;
+      } catch (err) {
+        msg.textContent = err.message || "Something went wrong. Please try again.";
+        btn.disabled = false; update();
+      }
+    });
+  })();
 
   // 4) Reveal al hacer scroll
   const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});

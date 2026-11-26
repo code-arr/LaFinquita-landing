@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Validar entradas — La Finquita 1920</title>
+<link rel="icon" type="image/jpeg" href="assets/logo.jpg" />
+<style>
+  :root{--black:#0a0a0a;--panel:#141414;--white:#f4f2ee;--muted:#9b968d;--line:rgba(244,242,238,.16);--ok:#1f7a3d;--bad:#9b1c1c;--warn:#a86b00;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{min-height:100svh;background:var(--black);color:var(--white);font-family:system-ui,sans-serif;padding:1rem;}
+  .wrap{max-width:460px;margin:0 auto;display:grid;gap:1rem;}
+  h1{font-size:1.2rem;font-weight:600;display:flex;justify-content:space-between;align-items:center;}
+  h1 small{font-size:.8rem;color:var(--muted);font-weight:400;}
+  input,button{font:inherit;padding:.85rem 1rem;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--white);width:100%;}
+  button{background:var(--white);color:var(--black);font-weight:600;cursor:pointer;border:none;}
+  button.ghost{background:none;color:var(--white);border:1px solid var(--line);}
+  #reader{width:100%;border-radius:8px;overflow:hidden;background:#000;min-height:260px;}
+  .row{display:flex;gap:.6rem;}
+  .row input{flex:1;}
+  .row button{width:auto;}
+  .muted{color:var(--muted);font-size:.85rem;}
+  .res{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;padding:2rem;text-align:center;}
+  .res[hidden]{display:none;}
+  .res.ok{background:var(--ok);} .res.bad{background:var(--bad);} .res.warn{background:var(--warn);}
+  .res .big{font-size:2.6rem;font-weight:800;line-height:1.1;}
+  .res .qty{font-size:1.5rem;font-weight:700;}
+  .res p{font-size:1.1rem;}
+  .res button{max-width:320px;margin-top:1.2rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Validar entradas · Extranjeros <small id="cont"></small></h1>
+
+  <form id="pinForm" class="wrap">
+    <p class="muted">Ingresá el PIN del staff.</p>
+    <input type="password" id="pin" inputmode="numeric" placeholder="PIN" autocomplete="off" required>
+    <button type="submit">Entrar</button>
+    <p class="muted" id="pinMsg"></p>
+  </form>
+
+  <section id="scan" hidden class="wrap">
+    <div id="reader"></div>
+    <p class="muted">Apuntá la cámara al QR del ticket. Si no lee, escribí el código a mano:</p>
+    <form class="row" id="manual">
+      <input id="codigo" placeholder="FQxxxx.xxxx" autocomplete="off">
+      <button type="submit">Validar</button>
+    </form>
+    <button class="ghost" id="salir">Cerrar sesión</button>
+  </section>
+</div>
+
+<div class="res" id="res" hidden>
+  <div class="big" id="resTit"></div>
+  <div class="qty" id="resQty"></div>
+  <p id="resNom"></p>
+  <p id="resDet" class="muted" style="color:#fff;opacity:.85"></p>
+  <button id="sig">Siguiente</button>
+</div>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const store = { get(){ try { return sessionStorage.getItem('pin'); } catch { return null; } },
+                  set(v){ try { v ? sessionStorage.setItem('pin', v) : sessionStorage.removeItem('pin'); } catch {} } };
+  let pin = store.get(), scanner = null, ocupado = false, validadas = 0;
+
+  const api = body => fetch('/api/validate', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ pin, ...body }) })
+    .then(async r => ({ status:r.status, data: await r.json().catch(() => ({})) }));
+
+  async function entrar(p){
+    pin = p;
+    const r = await api({});
+    if (r.status !== 200){ store.set(null); pin = null; $('pinMsg').textContent = r.data.error || 'Error'; return; }
+    store.set(p);
+    $('pinForm').hidden = true; $('scan').hidden = false;
+    iniciarCamara();
+  }
+
+  function iniciarCamara(){
+    scanner = new Html5Qrcode('reader');
+    scanner.start({ facingMode:'environment' }, { fps:10, qrbox:{ width:240, height:240 } }, t => validar(t), () => {})
+      .catch(() => { $('reader').innerHTML = '<p class="muted" style="padding:1rem">No se pudo abrir la cámara. Usá el ingreso manual.</p>'; });
+  }
+
+  async function validar(codigo){
+    if (ocupado) return;
+    ocupado = true;
+    try { scanner && scanner.pause(true); } catch {}
+    const { status, data } = await api({ codigo });
+    if (status === 401){ store.set(null); location.reload(); return; }
+    const res = $('res');
+    res.className = 'res ' + (data.ok ? 'ok' : (data.motivo === 'YA INGRESÓ' ? 'warn' : 'bad'));
+    $('resTit').textContent = data.ok ? '✓ ADELANTE' : '✕ ' + (data.motivo || data.error || 'Error');
+    $('resQty').textContent = data.cantidad ? `${data.cantidad} ${data.cantidad === 1 ? 'persona' : 'personas'}` : '';
+    $('resNom').textContent = data.nombre || '';
+    const det = [];
+    if (data.documento) det.push('Doc: ' + data.documento);
+    if (data.pais) det.push(data.pais);
+    if (data.fecha) det.push('Fecha ' + data.fecha);
+    if (data.usada) det.push('Ingresó: ' + new Date(data.usada).toLocaleTimeString('es-AR'));
+    $('resDet').textContent = det.join(' · ');
+    res.hidden = false;
+    if (data.ok){ validadas += data.cantidad; $('cont').textContent = validadas + ' ingresaron'; }
+    if (navigator.vibrate) navigator.vibrate(data.ok ? 120 : [80, 60, 80]);
+  }
+
+  $('sig').addEventListener('click', () => {
+    $('res').hidden = true; ocupado = false; $('codigo').value = '';
+    try { scanner && scanner.resume(); } catch {}
+  });
+  $('pinForm').addEventListener('submit', e => { e.preventDefault(); entrar($('pin').value.trim()); });
+  $('manual').addEventListener('submit', e => { e.preventDefault(); if ($('codigo').value.trim()) validar($('codigo').value.trim()); });
+  $('salir').addEventListener('click', () => { store.set(null); location.reload(); });
+  if (pin) entrar(pin);
+</script>
+</body>
+</html>
