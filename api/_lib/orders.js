@@ -105,6 +105,52 @@ export async function crearOrden(datos, origen) {
   }
 }
 
+// Link de pago manual (lo crea la encargada desde el panel, con un precio personalizado).
+// Reserva cupo en la fecha y devuelve el link de PayPal para enviarle al cliente.
+export async function crearLinkPago(datos, origen) {
+  const ev = evento(String(datos.fecha || ""));
+  if (!ev) throw new ErrorUsuario("Elegí una fecha válida.");
+  const cantidad = Number(datos.cantidad) || 1;
+  const monto = Math.round(Number(datos.monto) * 100) / 100;
+  const nombre = String(datos.nombre || "").trim().slice(0, 100) || "A definir";
+  const email = String(datos.email || "").trim().toLowerCase().slice(0, 100);
+  const concepto = String(datos.concepto || "").trim().slice(0, 80);
+  if (!Number.isInteger(cantidad) || cantidad < 1 || cantidad > MAX_POR_COMPRA)
+    throw new ErrorUsuario(`La cantidad tiene que ser entre 1 y ${MAX_POR_COMPRA}.`);
+  if (!(monto > 0)) throw new ErrorUsuario("Ingresá un monto en USD mayor a 0.");
+
+  const tomadas = await incrBy(`cupo:${ev.fecha}`, cantidad);
+  if (tomadas > ev.cupo) {
+    await incrBy(`cupo:${ev.fecha}`, -cantidad);
+    throw new ErrorUsuario("No queda cupo suficiente para esa fecha.");
+  }
+
+  const id = "FQ" + randomBytes(9).toString("base64url");
+  const orden = {
+    id, fecha: ev.fecha, titulo: ev.titulo, cantidad, nombre, email, documento: "",
+    pais: "—", paisCodigo: "", metodo: "paypal",
+    comida: false, opcion: concepto || "Link de pago", linkManual: true,
+    monto, moneda: MONEDA, estado: "PENDIENTE", creada: new Date().toISOString(),
+  };
+  await setJSON(`orden:${id}`, orden);
+  await push(`ordenes:${ev.fecha}`, id);
+
+  const descripcion = (concepto || `${ev.titulo} ${ev.fecha} x${cantidad}`).slice(0, 100);
+  const linkTicket = `${origen}/ticket.html?order=${id}`;
+  try {
+    const pago = await crearOrdenPaypal({
+      id, monto, moneda: MONEDA, descripcion,
+      returnUrl: linkTicket, cancelUrl: linkTicket + "&cancel=1",
+    });
+    orden.pagoId = pago.id;
+    await setJSON(`orden:${id}`, orden);
+    return { id, pagar: pago.redirect };
+  } catch (e) {
+    await liberar(orden, "ERROR");
+    throw e;
+  }
+}
+
 async function liberar(orden, estado) {
   if (await setNX(`liberada:${orden.id}`, Date.now())) await incrBy(`cupo:${orden.fecha}`, -orden.cantidad);
   orden.estado = estado;

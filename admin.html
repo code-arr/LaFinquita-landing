@@ -26,6 +26,13 @@
   th,td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--line);white-space:nowrap;}
   th{color:var(--muted);font-weight:500;}
   .si{color:#7bd88f;}
+  .paylink{background:var(--panel);border:1px solid var(--line);margin-bottom:1.2rem;}
+  .paylink > summary{cursor:pointer;padding:.9rem 1rem;font-size:1rem;}
+  .pl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;}
+  .pl-grid label{display:grid;gap:.3rem;font-size:.78rem;color:var(--muted);text-transform:none;}
+  .pl-grid input,.pl-grid select{width:100%;}
+  .pl-link{display:flex;gap:.5rem;}
+  .pl-link input{flex:1;color:#7bd88f;}
 </style>
 </head>
 <body>
@@ -84,7 +91,47 @@
       </details>`;
     }).join('');
 
-    $('out').innerHTML = kpis + `<div class="wrap" style="margin-top:1.2rem">${fechas}</div>`;
+    const dateOpts = d.fechas.filter(f => f.abierto).map(f => `<option value="${esc(f.fecha)}">${esc(f.fecha)} · ${esc(f.titulo)}</option>`).join('');
+    const paylink = `
+      <details class="paylink">
+        <summary><b>+ Crear link de pago</b> <span class="muted">· precio personalizado (ej: Año Nuevo + cena)</span></summary>
+        <div style="padding:0 1rem 1rem;display:grid;gap:.8rem">
+          <div class="pl-grid">
+            <label>Fecha<select id="plFecha">${dateOpts}</select></label>
+            <label>Cantidad<input id="plCant" type="number" min="1" max="6" value="1"></label>
+            <label>Monto total (USD)<input id="plMonto" type="number" min="1" step="1" placeholder="120"></label>
+          </div>
+          <div class="pl-grid">
+            <label>Nombre del cliente<input id="plNombre" placeholder="Opcional"></label>
+            <label>Email del cliente<input id="plEmail" type="email" placeholder="Opcional"></label>
+            <label>Concepto<input id="plConcepto" placeholder="ej: Año Nuevo + cena x2"></label>
+          </div>
+          <button type="button" id="plBtn" style="justify-self:start">Generar link</button>
+          <p class="muted" id="plMsg"></p>
+          <div id="plOut"></div>
+        </div>
+      </details>`;
+
+    $('out').innerHTML = kpis + paylink + `<div class="wrap" style="margin-top:1.2rem">${fechas}</div>`;
+
+    $('plBtn').addEventListener('click', async () => {
+      const body = {
+        fecha: $('plFecha').value, cantidad: Number($('plCant').value) || 1,
+        monto: Number($('plMonto').value), nombre: $('plNombre').value.trim(),
+        email: $('plEmail').value.trim(), concepto: $('plConcepto').value.trim(),
+      };
+      if (!(body.monto > 0)) { $('plMsg').textContent = 'Ingresá un monto en USD.'; return; }
+      $('plMsg').textContent = 'Generando…'; $('plOut').innerHTML = '';
+      try {
+        const r = await fetch('/api/paylink', { method:'POST', headers:{ 'Content-Type':'application/json', 'x-pin': pin }, body: JSON.stringify(body) });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.error || 'Error');
+        $('plMsg').textContent = '';
+        $('plOut').innerHTML = `<div class="pl-link"><input readonly id="plLink" value="${esc(j.pagar)}"><button type="button" id="plCopy">Copiar</button></div>
+          <p class="muted" style="margin-top:.4rem">Enviale este link al cliente (válido unas horas). Cuando paga, aparece en la fecha de arriba y te llega el aviso por mail.</p>`;
+        $('plCopy').addEventListener('click', () => { const i = $('plLink'); i.select(); try { document.execCommand('copy'); } catch {} $('plCopy').textContent = 'Copiado ✓'; });
+      } catch (e) { $('plMsg').textContent = e.message; }
+    });
   }
 
   $('pinForm').addEventListener('submit', e => { e.preventDefault(); cargar($('pin').value.trim()); });
