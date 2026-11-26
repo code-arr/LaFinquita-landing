@@ -6,7 +6,7 @@
 //   cupo:<fecha>    → entradas tomadas (pagadas + pendientes de pago)
 //   pagada:<id> / liberada:<id> / usada:<id> → candados para hacer cada cosa una sola vez
 import { createHmac, randomBytes } from "node:crypto";
-import { MONEDA, MAX_POR_COMPRA, PAISES, evento } from "./config.js";
+import { MONEDA, MAX_POR_COMPRA, COMIDA_EXTRA, PAISES, evento } from "./config.js";
 import { createPayment, getPayment } from "./dlocalgo.js";
 import { crearOrdenPaypal, getOrdenPaypal, capturarPaypal } from "./paypal.js";
 import { avisarEncargada } from "./email.js";
@@ -35,6 +35,9 @@ export async function crearOrden(datos, origen) {
   if (!ev || !ev.abierto) throw new ErrorUsuario("This date is not available.");
 
   const cantidad = Number(datos.cantidad);
+  // Opción "Sunset + comida": sólo si la fecha la ofrece (Año Nuevo no)
+  const comida = Boolean(datos.comida) && ev.comida;
+  const precioUnit = ev.precio + (comida ? COMIDA_EXTRA : 0);
   const nombre = String(datos.nombre || "").trim().slice(0, 100);
   const email = String(datos.email || "").trim().toLowerCase().slice(0, 100);
   const documento = String(datos.documento || "").trim().slice(0, 30);
@@ -61,13 +64,14 @@ export async function crearOrden(datos, origen) {
   const orden = {
     id, fecha: ev.fecha, titulo: ev.titulo, cantidad, nombre, email, documento,
     pais: pais.nombre, paisCodigo, metodo: pais.metodo,
-    monto: ev.precio * cantidad, moneda: MONEDA,
+    comida, opcion: comida ? "Sunset + comida" : "Sunset",
+    monto: precioUnit * cantidad, moneda: MONEDA,
     estado: "PENDIENTE", creada: new Date().toISOString(),
   };
   await setJSON(`orden:${id}`, orden);
   await push(`ordenes:${ev.fecha}`, id);
 
-  const descripcion = `${ev.titulo} ${ev.fecha} x${cantidad}`.slice(0, 100);
+  const descripcion = `${ev.titulo} · ${orden.opcion} · ${ev.fecha} x${cantidad}`.slice(0, 100);
   const linkTicket = `${origen}/ticket.html?order=${id}`;
   try {
     let pago;

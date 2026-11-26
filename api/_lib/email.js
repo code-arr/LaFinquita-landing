@@ -63,6 +63,7 @@ export async function avisarEncargada(orden) {
     <table style="border-collapse:collapse;font-size:14px;margin:12px 0">
       ${fila("Evento", escapeHTML(orden.titulo))}
       ${fila("Fecha", escapeHTML(fecha))}
+      ${fila("Opción", escapeHTML(orden.opcion || "Sunset") + (orden.comida ? " 🍽️ (con comida)" : ""))}
       ${fila("Cantidad", orden.cantidad + (orden.cantidad === 1 ? " entrada" : " entradas"))}
       ${fila("Cliente", escapeHTML(orden.nombre))}
       ${fila("✉️ Email del cliente", `<a href="mailto:${escapeHTML(orden.email)}">${escapeHTML(orden.email)}</a>`)}

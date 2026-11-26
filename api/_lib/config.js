@@ -8,6 +8,7 @@
 
 export const MONEDA = "USD";          // dLocal Go lo convierte a ARS en el checkout
 export const PRECIO_DEFAULT = 25;     // USD · Sunset normal (incluye margen por comisión de PayPal)
+export const COMIDA_EXTRA = 10;       // USD que se suma por la opción "Sunset + comida" (focaccia)
 export const CUPO_DEFAULT = 30;       // entradas reservadas para extranjeros por fecha
 export const MAX_POR_COMPRA = 6;
 export const ZONA_HORARIA = "America/Argentina/Mendoza";
@@ -53,7 +54,7 @@ export const FECHAS = {
   "2026-12-12": {},
   "2026-12-19": {},
   "2026-12-26": {},
-  "2027-01-01": { titulo: "New Year's Eve at La Finquita", precio: 50 },
+  "2027-01-01": { titulo: "New Year's Eve at La Finquita", precio: 50, comida: false }, // la cena se consulta por WhatsApp
   "2027-01-09": {},
   "2027-01-16": {},
   "2027-01-23": {},
@@ -73,6 +74,7 @@ export function evento(fecha) {
     titulo: cfg.titulo || "La Finquita Sunset",
     precio: cfg.precio ?? PRECIO_DEFAULT,
     cupo: cfg.cupo ?? CUPO_DEFAULT,
+    comida: cfg.comida !== false, // true salvo que la fecha lo desactive (ej: Año Nuevo)
     abierto: fecha >= hoy(),
   };
 }

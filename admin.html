@@ -77,8 +77,8 @@
         <summary><span><b>${esc(f.fecha)}</b> · ${esc(f.titulo)}</span>
           <span>${f.vendidas}/${f.cupo} vendidas · bruto ${usd(f.total)}${feeF ? ` · PayPal ${usd(feeF)} · neto ${usd(netoF)}` : ''}${f.pendientes ? ` · ${f.pendientes} pago(s) en curso` : ''}</span></summary>
         ${f.ordenes.length ? `<div class="tabla"><table>
-          <tr><th>Nombre</th><th>Cant.</th><th>Documento</th><th>País</th><th>Email</th><th>Pagó</th><th>Comisión PayPal</th><th>Neto</th><th>Medio</th><th>Fecha pago</th><th>Ingresó</th></tr>
-          ${f.ordenes.map(o => `<tr><td>${esc(o.nombre)}</td><td>${o.cantidad}</td><td>${esc(o.documento)}</td><td>${esc(o.pais)}</td>
+          <tr><th>Nombre</th><th>Cant.</th><th>Opción</th><th>Documento</th><th>País</th><th>Email</th><th>Pagó</th><th>Comisión PayPal</th><th>Neto</th><th>Medio</th><th>Fecha pago</th><th>Ingresó</th></tr>
+          ${f.ordenes.map(o => `<tr><td>${esc(o.nombre)}</td><td>${o.cantidad}</td><td>${esc(o.opcion || 'Sunset')}</td><td>${esc(o.documento)}</td><td>${esc(o.pais)}</td>
             <td>${esc(o.email)}</td><td>${usd(o.monto)}</td><td>${usd(feeDe(o))}</td><td>${usd(netoDe(o))}</td><td>${o.metodo === 'paypal' ? 'PayPal' : 'dLocal Go'}</td><td>${hora(o.pagada)}</td><td class="si">${o.ingreso ? '✓ ' + hora(o.ingreso) : ''}</td></tr>`).join('')}
         </table></div>` : ''}
       </details>`;
